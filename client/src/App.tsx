@@ -14,14 +14,14 @@ function App() {
     {
       _id: "string",
       name: "string",
-      path: "string",
+      path: "",
       dataCreate: new Date(),
       description: "string",
       tags: ["string"],
       size: 0,
     },
   ])
-  const [volume, setVolume] = React.useState(0.5)
+  const [volume, setVolume] = React.useState(0.25)
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setVolume((newValue as number) / 100)
@@ -54,9 +54,9 @@ function App() {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent:"center",
+            justifyContent: "center",
             width: 200,
-            height: "100%"
+            height: "100%",
           }}
         >
           <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
@@ -73,7 +73,8 @@ function App() {
       <div className="content">
         <div className="cards">
           {items.map((item: item) => {
-            return <SoundItem item={item} volume={volume} key={item._id} />
+            if (item.path)
+              return <SoundItem item={item} volume={volume} key={item._id}  />
           })}
         </div>
         <div className="slider"></div>

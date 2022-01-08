@@ -29,7 +29,26 @@ const streamQuery = async (req, res) => {
     res.status(500).json({ message: "streamQuery error", error: error.message })
   }
 }
+
+const downloadId = async (req, res) => {
+  try {
+    const path = `${config.get("filePath")}\\${req.query.id}.mp3`
+
+    fs.access(path, (e) => {
+      if (e) {
+        res.status(500).json({ message: "Файл не найден", error: e.message })
+      } else {
+        const stream = fs.createReadStream(path)
+        stream.pipe(res)
+      }
+    })
+  } catch (error) {
+    res.status(500).json({ message: "streamQuery error", error: error.message })
+  }
+}
+
 router.get("/:id", streamId)
 router.get("/", streamQuery)
+router.get("/download/:id", downloadId)
 
 module.exports = router
