@@ -1,9 +1,13 @@
 .App {
   display: grid;
-  grid-template-rows: 50px 1fr 80px;
+  grid-template-rows: 80px 1fr 80px;
   background-color: rgba(130, 107, 196, 0.445) ;
 }
-
+.header{
+  padding: 5px 0;
+  display: flex;
+  justify-content: center;  
+}
 .content {
   display: grid;
   grid-template-columns: 1fr;

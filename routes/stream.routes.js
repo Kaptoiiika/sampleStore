@@ -5,6 +5,7 @@ const fs = require("fs")
 
 const streamId = async (req, res) => {
   try {
+    console.log("start Idpipe")
     const path = `${config.get("filePath")}\\${req.params.id}.mp3`
     fs.createReadStream(path).pipe(res)
   } catch (error) {
@@ -15,18 +16,16 @@ const streamId = async (req, res) => {
 const streamQuery = async (req, res) => {
   try {
     const path = `${config.get("filePath")}\\${req.query.id}.mp3`
-    const {size} = fs.statSync(path)
 
     fs.access(path, (e) => {
       if (e) {
         res.status(500).json({ message: "Файл не найден", error: e.message })
       } else {
-        const stream = fs.createReadStream(path, { start: 0, end: size })
+        const stream = fs.createReadStream(path)
         stream.pipe(res)
       }
     })
   } catch (error) {
-    console.log(error.message)
     res.status(500).json({ message: "streamQuery error", error: error.message })
   }
 }

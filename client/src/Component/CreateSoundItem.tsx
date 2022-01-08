@@ -10,6 +10,7 @@ import {
 } from "@mui/material"
 import { TransitionProps } from "@mui/material/transitions"
 import axios from "axios"
+import SoundItem from "./SoundItem"
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -71,9 +72,7 @@ function CreateSoundItem() {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>Добавить звук</DialogTitle>
-        <DialogContent
-          style={{ display: "flex", flexDirection: "column",  }}
-        >
+        <DialogContent style={{ display: "flex", flexDirection: "column" }}>
           <form
             style={{
               display: "flex",
@@ -117,6 +116,20 @@ function CreateSoundItem() {
               type="file"
             />
           </form>
+          <div style={{margin:"20px 0 0  0"}}>
+            <SoundItem
+              item={{
+                name: form.name,
+                tags: form.tags.split(","),
+                description: form.description,
+                _id: "",
+                size: 0,
+                dataCreate: new Date(),
+                path: "",
+              }}
+              logic
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>

@@ -8,30 +8,44 @@ import {
 } from "@mui/material"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
+import { Delete } from "@mui/icons-material/"
 
 import { item } from "../Types/item"
 import { useEffect, useState } from "react"
+import axios from "axios"
 
 type Props = {
   item: item
+  volume?: number
+  logic?: boolean
 }
 function SoundItem(props: Props) {
-  const { name, path, description, size } = props.item
+  const { _id, name, path, description, size } = props.item
+  const { logic, volume } = props
   const [isPlaying, setIsPlaying] = useState(false)
   const [audioObj, setAudioObj] = useState<any>(false)
-  // audio/mpeg
-  const handlePlay = () => {
-    isPlaying ? audioObj.pause() : audioObj.play()
-    setIsPlaying(!isPlaying)
+
+  useEffect(() => {
+    if (audioObj) audioObj.volume = volume
+  }, [volume])
+
+  const handleLoad = (e: any) => {
+    if (!logic) setAudioObj(e.target)
   }
-
-  useEffect(() => {
-    setAudioObj(new Audio(`http://localhost:3030/api/play/?id=${path}`))
-  }, [])
-
-  useEffect(() => {
-    console.log(audioObj.paused)
-  }, [audioObj.paused])
+  const handlePlay = (e: any) => {
+    if (!logic) audioObj?.play()
+    setIsPlaying(true)
+  }
+  const handlePause = (e: any) => {
+    if (!logic) audioObj?.pause()
+    setIsPlaying(false)
+  }
+  const handleDelete = (e: any) => {
+    if (!logic) {
+      axios.delete(`/api/item/${_id}`)
+      window.location.reload()
+    }
+  }
 
   return (
     <Card>
@@ -72,7 +86,10 @@ function SoundItem(props: Props) {
               bottom: 0,
             }}
           >
-            <IconButton onClick={handlePlay} aria-label="play/pause">
+            <IconButton
+              onClick={isPlaying ? handlePause : handlePlay}
+              aria-label="play/pause"
+            >
               {isPlaying ? (
                 <PauseIcon sx={{ height: 38, width: 38 }} />
               ) : (
@@ -86,16 +103,26 @@ function SoundItem(props: Props) {
             >
               {`${((size || 0) / 1024 / 1024).toFixed(2)} mb`}
             </Typography>
+            <IconButton onClick={handleDelete} aria-label="delete" size="large">
+              <Delete />
+            </IconButton>
           </Box>
         </Box>
 
         <CardMedia
           component="img"
           sx={{ width: 151 }}
-          image="https://media.discordapp.net/attachments/499622001850318858/928965958784122920/Pianobook-Thumbnail-1.jpg?width=512&height=512"
+          image="https://yt3.ggpht.com/Y3Gd6uuOjlxVvQ10gcOpCJ6F0e9vEaM3ydtRrvFdpIITCHym6yZFzVo2yjeAhpoHLqdLKKiN=s900-c-k-c0x00ffffff-no-rj"
           alt="Live from space album cover"
         />
       </Box>
+
+      <audio id="player1" onEnded={handlePause} onCanPlay={handleLoad}>
+        <source
+          src={`http://localhost:3030/api/play/?id=${path}`}
+          type="audio/mpeg"
+        />
+      </audio>
     </Card>
   )
 }
