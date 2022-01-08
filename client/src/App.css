@@ -1,7 +1,9 @@
 .App {
   display: grid;
   grid-template-rows: 80px 1fr 80px;
-  background-color: rgba(130, 107, 196, 0.445) ;
+  background: linear-gradient(45deg, #a8edea, #fed6e3);
+
+
 }
 .header{
   padding: 5px 0;
@@ -19,7 +21,7 @@
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  gap: 15px;
+
 }
 
 .footer{

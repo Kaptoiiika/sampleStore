@@ -6,13 +6,10 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material"
-import { styled, alpha } from "@mui/system"
-import SliderUnstyled from "@mui/base/SliderUnstyled"
 
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
 import { Delete, FileDownload } from "@mui/icons-material/"
-
 import { item } from "../Types/item"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -28,22 +25,17 @@ function SoundItem(props: Props) {
   const { logic, volume } = props
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [audioObj, setAudioObj] = useState(
-    new Audio(`http://${window.location.hostname}:3030/api/play/?id=${path}`)
-  )
+  const [audioObj, setAudioObj] = useState(new Audio(``))
 
   useEffect(() => {
     audioObj.volume = volume || 0
-  }, [volume])
-
-  useEffect(() => {
     setTimeout(() => {
       setProgress(audioObj.currentTime / audioObj.duration)
     }, 50)
-  }, [audioObj.currentTime, isPlaying])
+  }, [audioObj, audioObj.currentTime, isPlaying, volume])
 
   const handleLoad = (e: any) => {
-    setAudioObj(e.target)
+    if (audioObj) setAudioObj(e.target)
   }
   const handlePlay = (e: any) => {
     if (!logic) audioObj?.play()
@@ -62,7 +54,7 @@ function SoundItem(props: Props) {
   }
 
   return (
-    <Card style={{ zIndex: "1" }}>
+    <Card style={{ zIndex: "1", margin: "10px" }}>
       <Box
         style={{
           display: "flex",
@@ -77,7 +69,13 @@ function SoundItem(props: Props) {
             flexDirection: "column",
           }}
         >
-          <Slider defaultValue={0} value={progress * 100} />
+          <div
+            style={{
+              height: "4px",
+              width: `${progress * 100}%`,
+              backgroundColor: "red",
+            }}
+          />
 
           <CardContent sx={{ flex: "1 0 auto" }}>
             <Typography component="div" variant="h5">
@@ -140,7 +138,7 @@ function SoundItem(props: Props) {
           image="https://yt3.ggpht.com/Y3Gd6uuOjlxVvQ10gcOpCJ6F0e9vEaM3ydtRrvFdpIITCHym6yZFzVo2yjeAhpoHLqdLKKiN=s900-c-k-c0x00ffffff-no-rj"
           alt="Live from space album cover"
         />
-        <audio onCanPlay={handleLoad}>
+        <audio onEnded={handlePause} onCanPlay={handleLoad}>
           <source
             src={`http://${window.location.hostname}:3030/api/play/?id=${path}`}
           />
@@ -151,68 +149,3 @@ function SoundItem(props: Props) {
 }
 
 export default SoundItem
-
-const Slider = styled(SliderUnstyled)(
-  ({ theme }) => `
-  color: ${theme.palette.mode === "light" ? "#ff0000" : "#969696"};
-  height: 4px;
-  width: 100%;
-  padding: 0;
-  display: inline-block;
-  position: sticky;
-  cursor: pointer;
-  touch-action: none;
-  -webkit-tap-highlight-color: transparent;
-  opacity: 0.75;
-  
-  &:hover {
-    opacity: 1;
-  }
-
-  & .MuiSlider-rail {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 4px;
-    border-radius: 2px;
-    background-color: currentColor;
-    opacity: 0;
-  }
-
-  & .MuiSlider-track {
-    display: block;
-    position: absolute;
-    height: 4px;
-    border-radius: 2px;
-    background-color: currentColor;
-  }
-
-  & .MuiSlider-thumb {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    margin-left: -6px;
-    margin-top: -5px;
-    box-sizing: border-box;
-    border-radius: 50%;
-    outline: 0;
-    border: 2px solid currentColor;
-    background-color: #fff;
-
-    :hover,
-    &.Mui-focusVisible {
-      box-shadow: 0 0 0 0.25rem ${alpha(
-        theme.palette.mode === "light" ? "#1976d2" : "#90caf9",
-        0.15
-      )};
-    }
-
-    &.Mui-active {
-      box-shadow: 0 0 0 0.25rem ${alpha(
-        theme.palette.mode === "light" ? "#1976d2" : "#90caf9",
-        0.3
-      )};
-    }
-  }
-`
-)

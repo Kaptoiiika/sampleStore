@@ -74,7 +74,8 @@ function App() {
         <div className="cards">
           {items.map((item: item) => {
             if (item.path)
-              return <SoundItem item={item} volume={volume} key={item._id}  />
+              return <SoundItem item={item} volume={volume} key={item._id} />
+            return null
           })}
         </div>
         <div className="slider"></div>

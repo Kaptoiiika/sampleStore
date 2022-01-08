@@ -6,7 +6,6 @@ const tags = ["anime", "jojo",'shrek']
 function Filter(props: any) {
   const { setFilter } = props
   const [value, setValue] = React.useState<string | null>("")
-  const [inputValue, setInputValue] = React.useState("")
 
   return (
     <>
@@ -15,9 +14,6 @@ function Filter(props: any) {
         onChange={(event: any, newValue: string | null) => {
           setValue(newValue)
           setFilter(newValue)
-        }}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue)
         }}
         options={tags}
         sx={{ width: 300 }}
