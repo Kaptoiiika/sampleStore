@@ -2,5 +2,5 @@
   "port": 3030,
   "mongoURL": "mongodb+srv://DiMiDROU:lol666lol@cluster0.ruofj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   "jwtKey": "haha",
-  "filePath": "C:\\Users\\Nikita\\Documents\\MyProjects\\SampleStore\\files"
+  "filePath": "C:\\Users\\Nikita\\Documents\\MyProjects\\Test\\files"
 }

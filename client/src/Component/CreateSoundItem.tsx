@@ -5,17 +5,30 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Slide,
   TextField,
 } from "@mui/material"
+import { TransitionProps } from "@mui/material/transitions"
+import axios from "axios"
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="down" ref={ref} {...props} />
+})
 
 function CreateSoundItem() {
   const [open, setOpen] = React.useState(false)
+  const [err, setErr] = React.useState("")
   const [form, setForm] = React.useState({
     name: "",
     tags: "",
     description: "",
   })
-  const [formData, setFile] = React.useState<FormData>(new FormData())
+  const [file, setFile] = React.useState<any>("")
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -24,35 +37,26 @@ function CreateSoundItem() {
   const handleClose = () => {
     setOpen(false)
   }
-
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
   const handleFileUpload = (e: any) => {
-    formData.append("source", e.target.files[0])
-
-    // console.log(formData.get("source"))
-    // const reader = new FileReader()
-    // reader.readAsBinaryString(e.target.files[0])
-
-    setFile(formData)
+    setFile(e.target.files[0])
   }
 
   const handleSend = async () => {
+    const formData = new FormData()
+    formData.append("name", form.name)
+    formData.append("tags", form.tags)
+    formData.append("description", form.description)
+    formData.append("source", file)
     try {
-      formData.append("name", form.name)
-      formData.append("tags", form.tags)
-      formData.append("description", form.description)
-
-      const res = await fetch("/api/item/create", {
-        method: "POST",
-        headers: {
-          "Contetnt-Type": "multipart/form-data",
-        },
-        body: formData,
-      })
-      if (res.ok === true) handleClose()
-    } catch (error) {}
+      await axios.post("/api/item/create", formData)
+      handleClose()
+      window.location.reload()
+    } catch (error: any) {
+      setErr(error.message)
+    }
   }
   return (
     <div>
@@ -62,18 +66,18 @@ function CreateSoundItem() {
       <Dialog
         open={open}
         keepMounted
+        TransitionComponent={Transition}
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>Добавить звук</DialogTitle>
         <DialogContent
-          style={{ display: "flex", flexDirection: "column", width: "500px" }}
+          style={{ display: "flex", flexDirection: "column",  }}
         >
           <form
             style={{
               display: "flex",
               flexDirection: "column",
-              width: "500px",
             }}
           >
             <TextField
@@ -82,6 +86,7 @@ function CreateSoundItem() {
               label="Название"
               variant="standard"
               autoComplete="off"
+              value={form.name}
             />
             <TextField
               onChange={handleChange}
@@ -90,6 +95,7 @@ function CreateSoundItem() {
               placeholder="kick, drums, snake, apple"
               variant="standard"
               autoComplete="off"
+              value={form.tags}
             />
             <TextField
               style={{ margin: "10px 0 0 0" }}
@@ -98,9 +104,11 @@ function CreateSoundItem() {
               multiline
               minRows={4}
               maxRows={4}
+              helperText={err || ""}
               variant="standard"
               label="Описание"
               autoComplete="off"
+              value={form.description}
             />
             <input
               id="source"
@@ -122,5 +130,4 @@ function CreateSoundItem() {
     </div>
   )
 }
-
 export default CreateSoundItem

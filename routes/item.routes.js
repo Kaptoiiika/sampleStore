@@ -1,15 +1,21 @@
+const config = require("config")
 const { Router } = require("express")
 const router = Router()
 const Item = require("../models/Item.js")
 
-const postCreate = async (req, res) => {
+const Create = async (req, res) => {
   try {
-    const source = req.files.source
- 
+    const file = req.files.source
+
     const { name, tags, description } = req.body
 
-    const item = new Item({ name, tags, description, source })
+    const item = new Item({ name, tags, description, size: file.size })
+
+    const path = `${config.get("filePath")}\\${item._id}.mp3`
+    file.mv(path)
+    item.path = item._id
     await item.save()
+
     res.status(201).json({ _id: item._id })
   } catch (error) {
     console.log(error.message)
@@ -17,9 +23,9 @@ const postCreate = async (req, res) => {
   }
 }
 
-const getItemId = async (req, res) => {
+const ItemId = async (req, res) => {
   try {
-    const data = await item.findById(req.params.id)
+    const data = await Item.findById(req.params.id)
     res.status(201).json(data)
   } catch (error) {
     console.log(error.message)
@@ -27,9 +33,9 @@ const getItemId = async (req, res) => {
   }
 }
 
-const getAll = async (req, res) => {
+const All = async (req, res) => {
   try {
-    const data = await item
+    const data = await Item.find()
     res.json(data)
   } catch (error) {
     console.log(error.message)
@@ -39,8 +45,8 @@ const getAll = async (req, res) => {
   }
 }
 
-router.post("/create", postCreate)
-router.get("/:id", getItemId)
-router.get("/", getAll)
+router.post("/create", Create)
+router.get("/:id", ItemId)
+router.get("/", All)
 
 module.exports = router
