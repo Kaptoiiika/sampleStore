@@ -7,8 +7,17 @@ import "./App.css"
 import { item } from "./Types/item"
 import { Stack, Slider } from "@mui/material"
 import { VolumeDown, VolumeUp } from "@mui/icons-material"
+import { useTypeSelector } from "./hooks/useTypeSelector"
+import { useDispatch } from "react-redux"
+import { login } from "./store/action-creators/auth"
 
 function App() {
+  const state = useTypeSelector((state) => state.Auth)
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+    dispatch(login("kapitoxa"))
+  }, [])
+
   const [filter, setFilter] = React.useState("")
   const [items, setItems] = React.useState<any>([
     {
@@ -26,6 +35,7 @@ function App() {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setVolume((newValue as number) / 100)
   }
+
   React.useEffect(() => {
     if (!filter) {
       const handle = async () => {
@@ -83,6 +93,7 @@ function App() {
       <div className="footer">
         <CreateSoundItem />
       </div>
+      <div>{JSON.stringify(state)}</div>
     </div>
   )
 }
