@@ -6,11 +6,11 @@ const mongoose = require("mongoose")
 const app = express()
 
 app.use(fileUpload({}))
-app.use(express.urlencoded())
 app.use(express.json())
 
 app.use("/api/play", require("./routes/stream.routes.js"))
 app.use("/api/item", require("./routes/item.routes.js"))
+app.use("/api/user", require("./routes/user.routes.js"))
 
 const PORT = config.get("port")
 

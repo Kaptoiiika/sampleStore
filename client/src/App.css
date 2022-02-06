@@ -1,34 +1,26 @@
 .App {
-  display: grid;
-  grid-template-rows: 80px 1fr 80px;
   background: linear-gradient(45deg, #a8edea, #fed6e3);
-
-
 }
-.header{
-  padding: 5px 0;
-  display: flex;
-  justify-content: center;  
+.App-Container {
+  margin: 56px 0 0 0;
 }
 .content {
   display: grid;
   grid-template-columns: 1fr;
   padding: 20px 0;
 }
-
 .cards {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-
 }
 
-.footer{
+.footer {
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
-.alignCenter{
+.alignCenter {
   align-self: center;
 }

@@ -1,12 +1,14 @@
 const { Schema, model, Types } = require("mongoose")
 
 const schema = new Schema({
-  name: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
   password: { type: String, required: true },
+
   icon: { type: String, default: "" },
   status: { type: String },
-  social: { type: String },
-  subscribers: [{ type: Types.ObjectId, ref: "Server" }],
+  subscription: { type: String, default: "standard" },
+  uploads: [{ type: Types.ObjectId }],
 })
 
 schema.set("toJSON", {

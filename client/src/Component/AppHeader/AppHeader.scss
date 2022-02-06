@@ -1,4 +1,6 @@
 .header-wraper {
+  position: sticky;
+  top: 0;
   width: 100%;
   z-index: 10;
 }
@@ -15,22 +17,48 @@
   display: flex;
   align-items: center;
   gap: 1em;
+  position: relative;
+  &-active::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 4px;
+    border-radius: 4px;
+    margin: 30px 0 0 0;
+    background: #03f;
+  }
   &-button {
     border: 0;
     border-radius: 0;
-    font-size: 16;
+    font-size: 16px;
     color: #a6a8ad;
     cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.15s;
     &-SignUp {
       color: black !important;
-      text-align: center;
       background-color: rgba(255, 255, 255, 1);
       border-radius: 100px;
       padding: 0.5rem 1.25rem;
       margin: 0;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.95);
+      }
     }
-    &-SignUp:hover {
-      background-color: rgba(255, 255, 255, 0.95);
+    &-Upgrade {
+      color: white !important;
+      border: 1px solid #45464d;
+      border-radius: 10px;
+      padding: 0.4rem 1.25rem;
+      font-size: 0.9rem;
+      margin: 0;
+      &:hover {
+        background-color: rgb(99, 101, 109);
+      }
     }
   }
   &-button:hover {
@@ -41,5 +69,6 @@
     display: flex;
     flex-direction: row;
     gap: 1em;
+    align-items: center;
   }
 }

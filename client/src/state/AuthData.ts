@@ -10,35 +10,22 @@ class AuthData {
   user = {
     _id: "null",
     name: "null",
+    email: "null",
     icon: "null",
     status: "",
-    subscribers: [{ _id: "null", name: "null" }],
+    subscription: "null",
+    uploads: [{ _id: "null" }],
   }
 
   constructor() {
     makeAutoObservable(this)
   }
-  async update() {
-    axios
-      .get("/api/user/update", {
-        headers: { Authorization: `Bearer ${this.token}` },
-      })
-      .then(({ data }) => {
-        this.user = data.user
-      })
-      .catch((error) => {
-        this.token = ""
-        localStorage.removeItem(storageName)
-      })
-      .finally(() => {
-        this.firstLoad = false
-      })
-  }
-  async login(login: string, password: string) {
-    this.loading = true
+
+  async login(email: string, password: string) {
     try {
+      this.loading = true
       const { data } = await axios.post("/api/user/login", {
-        name: login,
+        email: email,
         password: password,
       })
       this.token = data.token
@@ -58,11 +45,12 @@ class AuthData {
     }
   }
 
-  async registertration(login: string, password: string) {
+  async registertration(email: string, username: string, password: string) {
     this.loading = true
     try {
       const { data } = await axios.post("api/user/register", {
-        name: login,
+        email: email,
+        username: username,
         password: password,
       })
       this.token = data.token
@@ -136,7 +124,6 @@ class AuthData {
       await axios.get(`api/user/subscribe/${name}`, {
         headers: { Authorization: `Bearer ${this.token}` },
       })
-      this.update()
       return ""
     } catch (error: any) {
       return error.response.data.message

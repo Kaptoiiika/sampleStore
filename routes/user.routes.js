@@ -1,40 +1,28 @@
 const { Router } = require("express")
 const router = Router()
 const config = require("config")
-const { check, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("../models/User.js")
 const authMiddleware = require("../middleware/auth.middleware.js")
-const FileManager = require("../services/fileManager.js")
-const Server = require("../models/Server.js")
 const fs = require("fs")
 
 const registration = async (req, res) => {
   try {
-    const { name, password } = req.body
-    const candidat = await User.findOne({ name })
+    const { username, email, password } = req.body
+    const candidat = await User.findOne({ username })
     if (candidat)
       return res
         .status(400)
-        .json({ message: `Пользователь ${name} уже создан` })
-
-    const validErr = validationResult(req)
-    if (!validErr.isEmpty()) {
-      return res
-        .status(400)
-        .json({ message: "incorect requset", errors: validErr.errors })
-    }
+        .json({ message: `Пользователь ${username} уже создан` })
 
     const hashPassword = await bcrypt.hash(password, 6)
 
-    const user = new User({ name, password: hashPassword, icon: "avatar.png" })
-    await FileManager.createDir("users", user._id)
-    await FileManager.duplicateFile(
-      "users",
-      user._id,
-      `${config.get("filePath")}\\users\\default\\avatar.png`
-    )
+    const user = new User({
+      email,
+      username,
+      password: hashPassword,
+    })
     await user.save()
 
     const token = jwt.sign({ id: user.id }, config.get("jwtKey"), {
@@ -50,10 +38,12 @@ const registration = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { name, password } = req.body
-    const user = await User.findOne({ name })
+    const { email, password } = req.body
+    const user = await User.findOne({ email })
     if (!user)
-      return res.status(404).json({ message: `Пользователь ${name} не найден` })
+      return res
+        .status(404)
+        .json({ message: `Пользователь ${email} не найден` })
 
     const isPassValid = bcrypt.compareSync(password, user.password)
     if (!isPassValid)
@@ -65,7 +55,7 @@ const login = async (req, res) => {
 
     res.json({
       token,
-      user: await user.populate({ path: "subscribers", select: "name" }),
+      user,
     })
   } catch (error) {
     console.log(error.message)
@@ -75,22 +65,7 @@ const login = async (req, res) => {
 
 const subscribe = async (req, res) => {
   try {
-    const server = await Server.findOne({ name: req.params.name })
     const user = await User.findById(req.user.id)
-    if (!server)
-      return res
-        .status(404)
-        .json({ message: `server ${req.params.name} not found` })
-    if (
-      user.subscribers.find((obj) => {
-        return obj.toString() === server._id.toString()
-      })
-    ) {
-      return res.json({ message: "done" })
-    }
-    server.members.push(`${user._id}`)
-    user.subscribers.push(`${server._id}`)
-    server.save()
     user.save()
 
     res.json({ message: "done" })
@@ -127,19 +102,7 @@ const auth = async (req, res) => {
     })
     res.json({
       token,
-      user: await user.populate({ path: "subscribers", select: "name" }),
-    })
-  } catch (error) {
-    console.log(error.message)
-    res.status(500).json({ message: "error code 500", error: error.message })
-  }
-}
-
-const update = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id)
-    res.json({
-      user: await user.populate({ path: "subscribers", select: "name" }),
+      user,
     })
   } catch (error) {
     console.log(error.message)
@@ -153,6 +116,7 @@ const getAvatar = async (req, res) => {
     const filePath = `${config.get("filePath")}\\users\\${user.id}\\${
       user.icon
     }`
+
     if (fs.existsSync(filePath)) {
       res.sendFile(filePath)
     } else {
@@ -192,17 +156,7 @@ const updateInfo = async (req, res) => {
   }
 }
 
-router.post(
-  "/register",
-  [
-    check("name", "name is not string").isString(),
-    check("password", "password length must be 4 to 32").isLength({
-      min: 4,
-      max: 32,
-    }),
-  ],
-  registration
-)
+router.post("/register", registration)
 
 router.post("/login", login)
 router.post("/upload/avatar", authMiddleware, avatar)
@@ -210,7 +164,6 @@ router.post("/updateInfo", authMiddleware, updateInfo)
 
 router.get("/subscribe/:name", authMiddleware, subscribe)
 router.get("/auth", authMiddleware, auth)
-router.get("/update", authMiddleware, update)
 
 router.get("/avatar/:id", getAvatar)
 router.get("/:id", getUser)
