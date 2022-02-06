@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
@@ -15,19 +16,18 @@
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "axios": "^0.24.0",
+    "mobx": "^6.3.13",
+    "mobx-react-lite": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
-    "redux": "^4.1.2",
-    "redux-thunk": "^2.4.1",
     "typescript": "^4.5.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "craco start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/material-ui": "^0.21.12",
-    "@types/react-tap-event-plugin": "0.0.31"
+    "@types/react-tap-event-plugin": "0.0.31",
+    "sass": "^1.49.0"
   }
 }

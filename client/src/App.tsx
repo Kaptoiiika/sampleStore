@@ -7,17 +7,9 @@ import "./App.css"
 import { item } from "./Types/item"
 import { Stack, Slider } from "@mui/material"
 import { VolumeDown, VolumeUp } from "@mui/icons-material"
-import { useTypeSelector } from "./hooks/useTypeSelector"
-import { useDispatch } from "react-redux"
-import { login } from "./store/action-creators/auth"
-
+import AppHeader from "./Component/AppHeader/AppHeader"
+import { BrowserRouter } from "react-router-dom"
 function App() {
-  const state = useTypeSelector((state) => state.Auth)
-  const dispatch = useDispatch()
-  React.useEffect(() => {
-    dispatch(login("kapitoxa"))
-  }, [])
-
   const [filter, setFilter] = React.useState("")
   const [items, setItems] = React.useState<any>([
     {
@@ -58,7 +50,9 @@ function App() {
 
   return (
     <div className="App">
-      <div className="header">
+      <BrowserRouter>
+        <AppHeader />
+        {/* <div className="header">
         <Filter setFilter={setFilter} />
         <div
           style={{
@@ -79,21 +73,21 @@ function App() {
             <VolumeUp />
           </Stack>
         </div>
-      </div>
-      <div className="content">
-        <div className="cards">
-          {items.map((item: item) => {
-            if (item.path)
-              return <SoundItem item={item} volume={volume} key={item._id} />
-            return null
-          })}
+      </div> */}
+        <div className="content">
+          <div className="cards">
+            {items.map((item: item) => {
+              if (item.path)
+                return <SoundItem item={item} volume={volume} key={item._id} />
+              return null
+            })}
+          </div>
+          <div className="slider"></div>
         </div>
-        <div className="slider"></div>
-      </div>
-      <div className="footer">
-        <CreateSoundItem />
-      </div>
-      <div>{JSON.stringify(state)}</div>
+        <div className="footer">
+          <CreateSoundItem />
+        </div>{" "}
+      </BrowserRouter>
     </div>
   )
 }
