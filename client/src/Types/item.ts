@@ -6,4 +6,5 @@ export type item = {
   description?: string
   tags?: string[]
   size?: number
+  icon?: string
 }

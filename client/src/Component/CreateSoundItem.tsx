@@ -11,6 +11,7 @@ import {
 import { TransitionProps } from "@mui/material/transitions"
 import axios from "axios"
 import SoundItem from "./SoundItem"
+import defaulticon from "../static/icons/default.png"
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -29,7 +30,9 @@ function CreateSoundItem() {
     tags: "",
     description: "",
   })
-  const [file, setFile] = React.useState<any>("")
+  const [file, setFile] = React.useState<Blob>(new Blob())
+  const [avatar, setAvatar] = React.useState<Blob>(new Blob())
+  const [avatarUrl, setAvatarUrl] = React.useState("")
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -38,11 +41,21 @@ function CreateSoundItem() {
   const handleClose = () => {
     setOpen(false)
   }
+
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
+
   const handleFileUpload = (e: any) => {
     setFile(e.target.files[0])
+    if (!form.name) {
+      setForm({ ...form, name: e.target.files[0].name })
+    }
+  }
+
+  const handlePhotoUpload = (e: any) => {
+    setAvatar(e.target.files[0])
+    setAvatarUrl(URL.createObjectURL(e.target.files[0]))
   }
 
   const handleSend = async () => {
@@ -51,6 +64,7 @@ function CreateSoundItem() {
     formData.append("tags", form.tags)
     formData.append("description", form.description)
     formData.append("source", file)
+    formData.append("icon", avatar)
     try {
       await axios.post("/api/item/create", formData)
       handleClose()
@@ -115,8 +129,14 @@ function CreateSoundItem() {
               style={{ margin: "10px 0 0 0" }}
               type="file"
             />
+            <input
+              id="Photo"
+              onChange={handlePhotoUpload}
+              style={{ margin: "10px 0 0 0" }}
+              type="file"
+            />
           </form>
-          <div style={{margin:"20px 0 0  0"}}>
+          <div style={{ margin: "20px 0 0  0" }}>
             <SoundItem
               item={{
                 name: form.name,
@@ -126,6 +146,7 @@ function CreateSoundItem() {
                 size: 0,
                 dataCreate: new Date(),
                 path: "",
+                icon: !!avatar.size ? avatarUrl : defaulticon,
               }}
               logic
             />

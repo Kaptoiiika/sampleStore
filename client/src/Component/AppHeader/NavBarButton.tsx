@@ -13,7 +13,9 @@ const NavBarButton = (props: Props) => {
 
   return (
     <div
-      className={`NavBar-button ${currentPath === path ? "NavBar-active" : ""}`}
+      className={` ${
+        currentPath === path ? "NavBar-active" : ""
+      } NavBar-button`}
       onClick={() => {
         navigate(path)
       }}

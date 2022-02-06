@@ -21,7 +21,7 @@ type Props = {
 }
 
 function SoundItem(props: Props) {
-  const { _id, name, path, description, size } = props.item
+  const { _id, name, path, description, size, icon } = props.item
   const { logic, volume } = props
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -135,8 +135,8 @@ function SoundItem(props: Props) {
         <CardMedia
           component="img"
           sx={{ width: 151 }}
-          image="https://yt3.ggpht.com/Y3Gd6uuOjlxVvQ10gcOpCJ6F0e9vEaM3ydtRrvFdpIITCHym6yZFzVo2yjeAhpoHLqdLKKiN=s900-c-k-c0x00ffffff-no-rj"
-          alt="Live from space album cover"
+          image={icon ? icon : `http://localhost:3030/api/item/icon/${_id}`}
+          alt="someAvatar"
         />
         <audio onEnded={handlePause} onCanPlay={handleLoad}>
           <source

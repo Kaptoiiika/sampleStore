@@ -56,9 +56,11 @@ const Home = (props: Props) => {
         </div>
         <div className="slider"></div>
       </div>
-      <div className="footer">
-        <CreateSoundItem />
-      </div>{" "}
+      <div className="footer-wrapper">
+        <div className="footer">
+          <CreateSoundItem />
+        </div>
+      </div>
     </div>
   )
 }

@@ -7,13 +7,18 @@ const fs = require("fs")
 const Create = async (req, res) => {
   try {
     const file = req.files.source
+    const icon = req.files.icon
 
     const { name, tags, description } = req.body
 
     const item = new Item({ name, tags, description, size: file.size })
 
     const path = `${config.get("filePath")}\\${item._id}.mp3`
+    const iconPath = `${config.get("filePath")}\\icons\\${item._id}.png`
+
     file.mv(path)
+    icon.mv(iconPath)
+
     item.path = item._id
     await item.save()
 
@@ -31,6 +36,23 @@ const ItemId = async (req, res) => {
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: "get item error" })
+  }
+}
+
+const getIcon = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id)
+    const filePath = `${config.get("filePath")}\\icons\\${item.id}.png`
+
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath)
+    } else {
+      const filePath = `${config.get("filePath")}\\icons\\default.png`
+      res.sendFile(filePath)
+    }
+  } catch (error) {
+    console.log(error.message)
+    res.status(404).json({ message: "kapec net kartinki" })
   }
 }
 
@@ -76,5 +98,7 @@ router.delete("/:id", Delete)
 router.get("/tags", getByTags)
 router.get("/:id", ItemId)
 router.get("/", All)
+
+router.get("/icon/:id", getIcon)
 
 module.exports = router
