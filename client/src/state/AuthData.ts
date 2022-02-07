@@ -91,6 +91,10 @@ class AuthData {
     const { token } = JSON.parse(
       localStorage.getItem(storageName) || `{"token":""}`
     )
+    if (!token) {
+      this.firstLoad = false
+      return
+    }
     axios
       .get("/api/user/auth", {
         headers: { Authorization: `Bearer ${token}` },

@@ -13,44 +13,32 @@ import { Delete, FileDownload } from "@mui/icons-material/"
 import { item } from "../Types/item"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import AudioPlayer from "../state/AudioPlayer"
+import { observer } from "mobx-react-lite"
 
 type Props = {
   item: item
-  volume?: number
-  logic?: boolean
 }
 
-function SoundItem(props: Props) {
+const SoundItem = observer((props: Props) => {
   const { _id, name, path, description, size, icon } = props.item
-  const { logic, volume } = props
+
+  const isThis = AudioPlayer.audioSRC === _id
   const [isPlaying, setIsPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [audioObj, setAudioObj] = useState(new Audio(``))
 
-  useEffect(() => {
-    audioObj.volume = volume || 0
-    setTimeout(() => {
-      setProgress(audioObj.currentTime / audioObj.duration)
-    }, 50)
-  }, [audioObj, audioObj.currentTime, isPlaying, volume])
-
-  const handleLoad = (e: any) => {
-    if (audioObj) setAudioObj(e.target)
-  }
   const handlePlay = (e: any) => {
-    if (!logic) audioObj?.play()
+    if (!isThis) AudioPlayer.setAudio(_id)
+    else AudioPlayer.play()
     setIsPlaying(true)
   }
   const handlePause = (e?: any) => {
-    if (!logic) audioObj?.pause()
+    AudioPlayer.pause()
     setIsPlaying(false)
   }
 
   const handleDelete = (e: any) => {
-    if (!logic) {
-      axios.delete(`/api/item/${_id}`)
-      window.location.reload()
-    }
+    axios.delete(`/api/item/${_id}`)
+    window.location.reload()
   }
 
   return (
@@ -69,14 +57,6 @@ function SoundItem(props: Props) {
             flexDirection: "column",
           }}
         >
-          <div
-            style={{
-              height: "4px",
-              width: `${progress * 100}%`,
-              backgroundColor: "red",
-            }}
-          />
-
           <CardContent sx={{ flex: "1 0 auto" }}>
             <Typography component="div" variant="h5">
               {name}
@@ -135,17 +115,16 @@ function SoundItem(props: Props) {
         <CardMedia
           component="img"
           sx={{ width: 151 }}
-          image={icon ? icon : `http://localhost:3030/api/item/icon/${_id}`}
+          image={
+            icon
+              ? icon
+              : `http://${window.location.hostname}:3030/api/item/icon/${_id}`
+          }
           alt="someAvatar"
         />
-        <audio onEnded={handlePause} onCanPlay={handleLoad}>
-          <source
-            src={`http://${window.location.hostname}:3030/api/play/?id=${path}`}
-          />
-        </audio>
       </Box>
     </Card>
   )
-}
+})
 
 export default SoundItem

@@ -1,12 +1,13 @@
 import axios from "axios"
+import { observer } from "mobx-react-lite"
 import React from "react"
-import CreateSoundItem from "../Component/CreateSoundItem"
 import SoundItem from "../Component/SoundItem"
+import AudioPlayer from "../state/AudioPlayer"
 import { item } from "../Types/item"
 
 type Props = {}
 
-const Home = (props: Props) => {
+const Home = observer((props: Props) => {
   const [filter, setFilter] = React.useState("")
   const [items, setItems] = React.useState<any>([
     {
@@ -19,11 +20,6 @@ const Home = (props: Props) => {
       size: 0,
     },
   ])
-  const [volume, setVolume] = React.useState(0.25)
-
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setVolume((newValue as number) / 100)
-  }
 
   React.useEffect(() => {
     if (!filter) {
@@ -49,20 +45,13 @@ const Home = (props: Props) => {
       <div className="content">
         <div className="cards">
           {items.map((item: item) => {
-            if (item.path)
-              return <SoundItem item={item} volume={volume} key={item._id} />
+            if (item.path) return <SoundItem item={item} key={item._id} />
             return null
           })}
-        </div>
-        <div className="slider"></div>
-      </div>
-      <div className="footer-wrapper">
-        <div className="footer">
-          <CreateSoundItem />
         </div>
       </div>
     </div>
   )
-}
+})
 
 export default Home

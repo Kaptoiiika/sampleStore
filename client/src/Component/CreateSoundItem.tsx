@@ -13,17 +13,13 @@ import axios from "axios"
 import SoundItem from "./SoundItem"
 import defaulticon from "../static/icons/default.png"
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />
-})
+type Props = {
+  open: boolean
+  onClose: () => void
+}
 
-function CreateSoundItem() {
-  const [open, setOpen] = React.useState(false)
+function CreateSoundItem(props: Props) {
+  const { open, onClose } = props
   const [err, setErr] = React.useState("")
   const [form, setForm] = React.useState({
     name: "",
@@ -34,12 +30,8 @@ function CreateSoundItem() {
   const [avatar, setAvatar] = React.useState<Blob>(new Blob())
   const [avatarUrl, setAvatarUrl] = React.useState("")
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-
   const handleClose = () => {
-    setOpen(false)
+    onClose()
   }
 
   const handleChange = (e: any) => {
@@ -73,11 +65,9 @@ function CreateSoundItem() {
       setErr(error.message)
     }
   }
+
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
-        Добавить звук
-      </Button>
       <Dialog
         open={open}
         keepMounted
@@ -148,7 +138,6 @@ function CreateSoundItem() {
                 path: "",
                 icon: !!avatar.size ? avatarUrl : defaulticon,
               }}
-              logic
             />
           </div>
         </DialogContent>
@@ -164,4 +153,12 @@ function CreateSoundItem() {
     </div>
   )
 }
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="down" ref={ref} {...props} />
+})
 export default CreateSoundItem
