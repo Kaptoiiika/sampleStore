@@ -40,6 +40,7 @@ const Home = observer((props: Props) => {
       handle()
     }
   }, [filter])
+
   return (
     <div>
       <div className="content">

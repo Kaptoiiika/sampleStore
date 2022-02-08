@@ -60,7 +60,7 @@ function CreateSoundItem(props: Props) {
     try {
       await axios.post("/api/item/create", formData)
       handleClose()
-      window.location.reload()
+      // window.location.reload()
     } catch (error: any) {
       setErr(error.message)
     }

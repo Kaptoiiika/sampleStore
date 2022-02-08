@@ -2,11 +2,14 @@ const config = require("config")
 const { Router } = require("express")
 const router = Router()
 const fs = require("fs")
+const Item = require("../models/Item")
+const { findById } = require("../models/Item")
 
 const streamId = async (req, res) => {
   try {
-    console.log("start Idpipe")
-    const path = `${config.get("filePath")}\\${req.params.id}.mp3`
+    const item = await Item.findById(req.params.id)
+    const path = `${config.get("filePath")}\\${item.path}`
+
     fs.createReadStream(path).pipe(res)
   } catch (error) {
     console.log(error.message)
@@ -15,7 +18,8 @@ const streamId = async (req, res) => {
 }
 const streamQuery = async (req, res) => {
   try {
-    const path = `${config.get("filePath")}\\${req.query.id}.mp3`
+    const item = await Item.findById(req.query.id)
+    const path = `${config.get("filePath")}\\${item.path}`
 
     fs.access(path, (e) => {
       if (e) {
@@ -32,7 +36,7 @@ const streamQuery = async (req, res) => {
 
 const downloadId = async (req, res) => {
   try {
-    const path = `${config.get("filePath")}\\${req.query.id}.mp3`
+    const path = `${config.get("filePath")}\\${req.params.path}`
 
     fs.access(path, (e) => {
       if (e) {
@@ -49,6 +53,6 @@ const downloadId = async (req, res) => {
 
 router.get("/:id", streamId)
 router.get("/", streamQuery)
-router.get("/download/:id", downloadId)
+router.get("/download/:path", downloadId)
 
 module.exports = router

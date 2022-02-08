@@ -52,7 +52,7 @@ const SoundItem = observer((props: Props) => {
         <Box
           sx={{
             width: "250px",
-            height: "165px",
+            height: "150px",
             display: "flex",
             flexDirection: "column",
           }}
@@ -97,16 +97,17 @@ const SoundItem = observer((props: Props) => {
             >
               {`${((size || 0) / 1024 / 1024).toFixed(2)} mb`}
             </Typography>
+
             <IconButton
-              href={`http://${window.location.hostname}:3030/api/play/?id=${path}`}
-              download={`${name}`}
+              href={`http://${window.location.hostname}:3030/api/play/download/${path}`}
+              download
               no-referrer
-              aria-label="delete"
               size="large"
             >
               <FileDownload />
             </IconButton>
-            <IconButton onClick={handleDelete} aria-label="delete" size="large">
+
+            <IconButton onClick={handleDelete} size="large">
               <Delete />
             </IconButton>
           </Box>

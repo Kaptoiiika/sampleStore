@@ -13,13 +13,13 @@ const Create = async (req, res) => {
 
     const item = new Item({ name, tags, description, size: file.size })
 
-    const path = `${config.get("filePath")}\\${item._id}.mp3`
-    const iconPath = `${config.get("filePath")}\\icons\\${item._id}.png`
-
+    const path = `${config.get("filePath")}\\${file.name}`
+    item.path = `${file.name}`
     file.mv(path)
+
+    const iconPath = `${config.get("filePath")}\\icons\\${item._id}.png`
     icon.mv(iconPath)
 
-    item.path = item._id
     await item.save()
 
     res.status(201).json({ _id: item._id })
