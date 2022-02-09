@@ -18,7 +18,17 @@ const Create = async (req, res) => {
     file.mv(path)
 
     const iconPath = `${config.get("filePath")}\\icons\\${item._id}.png`
-    icon.mv(iconPath)
+    if (icon && icon.size) {
+      icon.mv(iconPath)
+    } else {
+      fs.copyFile(
+        `${config.get("filePath")}\\icons\\default.png`,
+        iconPath,
+        (err) => {
+          console.log(err)
+        }
+      )
+    }
 
     await item.save()
 
@@ -58,7 +68,6 @@ const getIcon = async (req, res) => {
 
 const getByTags = async (req, res) => {
   try {
-    // console.log(req.params)
     const data = await Item.where("tags").equals(req.query.tags).limit(50)
     res.status(201).json(data)
   } catch (error) {
@@ -81,10 +90,14 @@ const All = async (req, res) => {
 
 const Delete = async (req, res) => {
   try {
-    const data = await Item.findByIdAndDelete(req.params.id)
-    const path = `${config.get("filePath")}\\${req.params.id}.mp3`
+    const item = await Item.findById(req.params.id)
+
+    const path = `${config.get("filePath")}\\${item.path}`
     fs.unlinkSync(path)
-    res.json(data)
+
+    await Item.findByIdAndDelete(req.params.id)
+
+    res.status(200)
   } catch (error) {
     console.log(error.message)
     res

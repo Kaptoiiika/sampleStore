@@ -11,7 +11,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
 import { Delete, FileDownload } from "@mui/icons-material/"
 import { item } from "../Types/item"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 import AudioPlayer from "../state/AudioPlayer"
 import { observer } from "mobx-react-lite"
@@ -80,16 +80,23 @@ const SoundItem = observer((props: Props) => {
               bottom: 0,
             }}
           >
-            <IconButton
-              onClick={isPlaying ? handlePause : handlePlay}
-              aria-label="play/pause"
-            >
-              {isPlaying ? (
-                <PauseIcon sx={{ height: 38, width: 38 }} />
-              ) : (
-                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-              )}
-            </IconButton>
+            {["mp3", "wav", "mp4a"].includes(
+              path.split(".").pop() as string
+            ) ? (
+              <IconButton
+                onClick={isPlaying ? handlePause : handlePlay}
+                aria-label="play/pause"
+              >
+                {isPlaying ? (
+                  <PauseIcon sx={{ height: 38, width: 38 }} />
+                ) : (
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                )}
+              </IconButton>
+            ) : (
+              <div>  &nbsp;</div>
+            )}
+
             <Typography
               variant="subtitle1"
               color="text.secondary"
@@ -115,7 +122,7 @@ const SoundItem = observer((props: Props) => {
 
         <CardMedia
           component="img"
-          sx={{ width: 151 }}
+          sx={{ width: 150 }}
           image={
             icon
               ? icon

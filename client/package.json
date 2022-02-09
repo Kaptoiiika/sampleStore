@@ -20,6 +20,7 @@
     "mobx-react-lite": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-file-dropzone": "^0.4.1",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",

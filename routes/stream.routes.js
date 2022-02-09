@@ -50,7 +50,9 @@ const downloadId = async (req, res) => {
     res.status(500).json({ message: "streamQuery error", error: error.message })
   }
 }
-
+/*
+/api/play
+*/
 router.get("/:id", streamId)
 router.get("/", streamQuery)
 router.get("/download/:path", downloadId)

@@ -3,46 +3,49 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import SoundItem from "../Component/SoundItem"
 import AudioPlayer from "../state/AudioPlayer"
+import ItemsData from "../state/ItemsData"
 import { item } from "../Types/item"
 
 type Props = {}
 
 const Home = observer((props: Props) => {
-  const [filter, setFilter] = React.useState("")
-  const [items, setItems] = React.useState<any>([
-    {
-      _id: "string",
-      name: "string",
-      path: "",
-      dataCreate: new Date(),
-      description: "string",
-      tags: ["string"],
-      size: 0,
-    },
-  ])
+  const [isOver, setisOver] = React.useState(false)
+  const items = ItemsData.items
 
   React.useEffect(() => {
-    if (!filter) {
-      const handle = async () => {
-        try {
-          const data = await axios.get("/api/item")
-          setItems(data.data)
-        } catch (error) {}
-      }
-      handle()
-    } else {
-      const handle = async () => {
-        try {
-          const data = await axios.get(`/api/item/tags?tags=${filter}`)
-          setItems(data.data)
-        } catch (error) {}
-      }
-      handle()
-    }
-  }, [filter])
+    ItemsData.get()
+  }, [])
+
+  const fileDrop = (e: any) => {
+    e.preventDefault()
+    const file = e.dataTransfer.files[0]
+    ItemsData.handleSend({ name: file.name, description: file.type }, file)
+    console.log(file)
+    setisOver(false)
+  }
+  const dragOver = (e: any) => {
+    setisOver(true)
+    e.preventDefault()
+  }
+
+  const dragEnter = (e: any) => {
+    e.preventDefault()
+  }
+
+  const dragLeave = (e: any) => {
+    setisOver(false)
+    e.preventDefault()
+  }
 
   return (
-    <div>
+    <div
+      onDragOver={dragOver}
+      onDragEnter={dragEnter}
+      onDragLeave={dragLeave}
+      onDrop={fileDrop}
+      className={isOver ? "dragOver" : ""}
+      style={{ height: "100%" }}
+    >
       <div className="content">
         <div className="cards">
           {items.map((item: item) => {

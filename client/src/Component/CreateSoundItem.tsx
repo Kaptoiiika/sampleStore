@@ -12,13 +12,15 @@ import { TransitionProps } from "@mui/material/transitions"
 import axios from "axios"
 import SoundItem from "./SoundItem"
 import defaulticon from "../static/icons/default.png"
+import { observer } from "mobx-react-lite"
+import ItemsData from "../state/ItemsData"
 
 type Props = {
   open: boolean
   onClose: () => void
 }
 
-function CreateSoundItem(props: Props) {
+const CreateSoundItem = observer((props: Props) => {
   const { open, onClose } = props
   const [err, setErr] = React.useState("")
   const [form, setForm] = React.useState({
@@ -51,19 +53,7 @@ function CreateSoundItem(props: Props) {
   }
 
   const handleSend = async () => {
-    const formData = new FormData()
-    formData.append("name", form.name)
-    formData.append("tags", form.tags)
-    formData.append("description", form.description)
-    formData.append("source", file)
-    formData.append("icon", avatar)
-    try {
-      await axios.post("/api/item/create", formData)
-      handleClose()
-      // window.location.reload()
-    } catch (error: any) {
-      setErr(error.message)
-    }
+    ItemsData.handleSend(form, file, avatar)
   }
 
   return (
@@ -152,7 +142,7 @@ function CreateSoundItem(props: Props) {
       </Dialog>
     </div>
   )
-}
+})
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>
