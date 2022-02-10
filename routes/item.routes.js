@@ -93,7 +93,9 @@ const Delete = async (req, res) => {
     const item = await Item.findById(req.params.id)
 
     const path = `${config.get("filePath")}\\${item.path}`
-    fs.unlinkSync(path)
+    try {
+      fs.unlinkSync(path)
+    } catch (error) {}
 
     await Item.findByIdAndDelete(req.params.id)
 

@@ -2,6 +2,7 @@ import "./AppFooter.scss"
 import React from "react"
 import CreateSoundItem from "../CreateSoundItem"
 import Player from "./Player"
+import AudioVisual from "./AudioVisual"
 
 type Props = {}
 
@@ -13,6 +14,8 @@ const AppFooter = (props: Props) => {
 
   return (
     <div className="footer-wrapper">
+      <AudioVisual />
+
       <div className="footer">
         <Player />
         <div className="alignCenter">

@@ -2,7 +2,6 @@ import axios from "axios"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import SoundItem from "../Component/SoundItem"
-import AudioPlayer from "../state/AudioPlayer"
 import ItemsData from "../state/ItemsData"
 import { item } from "../Types/item"
 
@@ -54,6 +53,7 @@ const Home = observer((props: Props) => {
           })}
         </div>
       </div>
+
     </div>
   )
 })

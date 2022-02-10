@@ -1,29 +1,44 @@
 import apiClient from "../services/apiClient"
-import { makeAutoObservable } from "mobx"
+import { autorun, makeAutoObservable } from "mobx"
 
-const defaultURL = `http://${window.location.hostname}:3030/api/play/`
+const defaultURL = `/api/play/`
+// const defaultURL = `/api/play/`
+
 class AudioPlayer {
   audio = new Audio()
   audioSRC = ""
   isPlay = false
-  volume = 0.5
+  volume = 0.3
+
+  context = new AudioContext()
+  analyser = this.context.createAnalyser()
 
   constructor() {
     makeAutoObservable(this)
+    this.audio.crossOrigin = "anonymous"
+    this.analyser.fftSize = 128
+    const src = this.context.createMediaElementSource(this.audio)
+    src.connect(this.analyser)
+    this.analyser.connect(this.context.destination)
   }
 
   setAudio(id: string) {
     this.audioSRC = id
+
     this.audio.src = `${defaultURL}?id=${id}`
+    this.audio.crossOrigin = "anonymous"
     this.audio.volume = this.volume
     this.play()
   }
+
   setVolume(pwr: number) {
     this.volume = pwr
     this.audio.volume = pwr
   }
 
   play() {
+    this.context.resume()
+
     this.audio.play()
     this.isPlay = true
   }

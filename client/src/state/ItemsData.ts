@@ -39,6 +39,14 @@ class ItemsData {
       console.log(error.message)
     }
   }
+  async delete(id: string) {
+    try {
+      apiClient.delete(`/api/item/${id}`)
+      this.get()
+    } catch (error: any) {
+      console.log(error.message)
+    }
+  }
 }
 
 export default new ItemsData()

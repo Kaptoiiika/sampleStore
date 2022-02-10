@@ -15,6 +15,7 @@ import { useState } from "react"
 import axios from "axios"
 import AudioPlayer from "../state/AudioPlayer"
 import { observer } from "mobx-react-lite"
+import ItemsData from "../state/ItemsData"
 
 type Props = {
   item: item
@@ -37,8 +38,7 @@ const SoundItem = observer((props: Props) => {
   }
 
   const handleDelete = (e: any) => {
-    axios.delete(`/api/item/${_id}`)
-    window.location.reload()
+    ItemsData.delete(_id)
   }
 
   return (
@@ -58,7 +58,7 @@ const SoundItem = observer((props: Props) => {
           }}
         >
           <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h5">
+            <Typography component="div" variant="h6">
               {name}
             </Typography>
             <Typography
