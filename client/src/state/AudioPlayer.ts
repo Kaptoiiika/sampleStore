@@ -6,25 +6,23 @@ const defaultURL = `/api/play/`
 
 class AudioPlayer {
   audio = new Audio()
-  audioSRC = ""
   isPlay = false
-  volume = 0.3
+  volume = 0.5
 
   context = new AudioContext()
   analyser = this.context.createAnalyser()
 
   constructor() {
     makeAutoObservable(this)
+
     this.audio.crossOrigin = "anonymous"
-    this.analyser.fftSize = 128
+    this.analyser.fftSize = 512
     const src = this.context.createMediaElementSource(this.audio)
     src.connect(this.analyser)
     this.analyser.connect(this.context.destination)
   }
 
   setAudio(id: string) {
-    this.audioSRC = id
-
     this.audio.src = `${defaultURL}?id=${id}`
     this.audio.crossOrigin = "anonymous"
     this.audio.volume = this.volume

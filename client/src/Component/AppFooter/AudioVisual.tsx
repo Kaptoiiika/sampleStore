@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite"
 import React from "react"
 import AudioPlayer from "../../state/AudioPlayer"
+import { interpolateCool, scaleSequential } from "d3"
 
 type Props = {}
 const AudioVisual = observer((props: Props) => {
@@ -22,22 +23,38 @@ const AudioVisual = observer((props: Props) => {
     const WIDTH = canvas.width
     const HEIGHT = canvas.height
 
-    const barWidth = WIDTH / bufferLength
+    const barWidth = WIDTH / bufferLength / 2
 
     analyser.getByteFrequencyData(dataArray)
-    ctx.fillStyle = "#000000"
-    ctx.fillRect(0, 0, WIDTH, HEIGHT)
-    for (let i = 0; i < bufferLength; i += 1) {
-      const barHeight = dataArray[i]
 
-      ctx.fillStyle = "blue"
-      //void ctx.fillRect(x, y, width, height);
-      ctx.fillRect(i * barWidth, HEIGHT - barHeight, barWidth, barHeight)
-    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    dataArray.map((value: number, index: number) => {
+      const interval = Math.max(value, 16)
+
+      ctx.fillStyle = scaleFn(value)
+      if (!index) {
+        return ctx.fillRect(WIDTH / 2, HEIGHT - value / 2, barWidth, value / 2)
+      }
+
+      ctx.fillRect(
+        WIDTH / 2 + index * barWidth,
+        HEIGHT - value / 2,
+        barWidth,
+        value / 2
+      )
+
+      ctx.fillRect(
+        WIDTH / 2 - index * barWidth,
+        HEIGHT - value / 2,
+        barWidth,
+        value / 2
+      )
+    })
 
     previousTimeRef.current = time
     requestRef.current = requestAnimationFrame(animate)
   }
+
   const handleCanvas = React.useCallback((node) => {
     setCanvas(node)
     setCtx(node.getContext("2d"))
@@ -49,7 +66,9 @@ const AudioVisual = observer((props: Props) => {
     return () => cancelAnimationFrame(requestRef.current as number)
   }, [canvas])
 
-  return <canvas className="canvas" ref={handleCanvas} />
+  return <canvas className="AudioVisuals" ref={handleCanvas} width="1920" />
 })
+const scaleFn = scaleSequential(interpolateCool)
+  .domain([0, 512])
 
 export default AudioVisual

@@ -6,6 +6,13 @@ body {
   font-family: 'Balsamiq Sans', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgb(21, 15, 62);
+  background: linear-gradient(
+    270deg,
+    rgba(21, 15, 62, 1) 0%,
+    rgba(38, 16, 35, 1) 49%,
+    rgba(6, 27, 55, 1) 100%
+  );
 }
 
 code {
