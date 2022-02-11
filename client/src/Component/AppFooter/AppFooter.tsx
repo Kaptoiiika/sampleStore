@@ -17,19 +17,26 @@ const AppFooter = (props: Props) => {
       <AudioVisual />
 
       <div className="footer">
-        <Player />
-        <div className="alignCenter">
-          {/* <div className="footer-button" onClick={handleClickOpen}>
-            Добавить звук
-          </div> */}
-        </div>
-        <CreateSoundItem
-          open={open}
-          onClose={() => {
-            setOpen(false)
+        <div
+          className="footer-button"
+          onClick={() => {
+            alert("boar")
           }}
-        />
+        >
+          someButton
+        </div>
+        <Player />
+
+        <div className="footer-button" onClick={handleClickOpen}>
+          Добавить звук
+        </div>
       </div>
+      <CreateSoundItem
+        open={open}
+        onClose={() => {
+          setOpen(false)
+        }}
+      />
     </div>
   )
 }

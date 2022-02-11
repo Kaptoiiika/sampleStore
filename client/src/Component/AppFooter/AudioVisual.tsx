@@ -12,10 +12,10 @@ const AudioVisual = observer((props: Props) => {
   const [ctx, setCtx] = React.useState<any>()
 
   const analyser = AudioPlayer.analyser
-  const [bufferLength, setbufferLength] = React.useState<any>(
+  const [bufferLength] = React.useState(
     analyser.frequencyBinCount
   )
-  const [dataArray, setdataArray] = React.useState<any>(
+  const [dataArray] = React.useState(
     new Uint8Array(bufferLength)
   )
 
@@ -28,10 +28,10 @@ const AudioVisual = observer((props: Props) => {
     analyser.getByteFrequencyData(dataArray)
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    dataArray.map((value: number, index: number) => {
-      const interval = Math.max(value, 16)
+    dataArray.forEach((value: number, index: number) => {
 
       ctx.fillStyle = scaleFn(value)
+
       if (!index) {
         return ctx.fillRect(WIDTH / 2, HEIGHT - value / 2, barWidth, value / 2)
       }
@@ -64,6 +64,7 @@ const AudioVisual = observer((props: Props) => {
     if (!canvas) return
     requestRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(requestRef.current as number)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas])
 
   return <canvas className="AudioVisuals" ref={handleCanvas} width="1920" />

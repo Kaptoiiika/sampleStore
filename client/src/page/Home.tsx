@@ -43,7 +43,6 @@ const Home = observer((props: Props) => {
       onDragLeave={dragLeave}
       onDrop={fileDrop}
       className={isOver ? "dragOver" : ""}
-      style={{ height: "100%" }}
     >
       <div className="content">
         <div className="cards">

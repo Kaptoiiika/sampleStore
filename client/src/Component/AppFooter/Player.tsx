@@ -3,16 +3,13 @@ import { IconButton } from "@mui/material"
 import { observer } from "mobx-react-lite"
 import AudioPlayer from "../../state/AudioPlayer"
 
-import PlayArrowIcon from "@mui/icons-material/PlayArrow"
-import PauseIcon from "@mui/icons-material/Pause"
+import { IoPlay, IoPause } from "react-icons/io5"
+import PlaybackSlider from "./Player/PlaybackSlider"
 
-type Props = {
-  color?: string
-}
+type Props = {}
 
 const Player = observer((props: Props) => {
-  const { color = "white" } = props
-  const styles = {  height: 32, width: 32 }
+  const audio = AudioPlayer.audio
 
   const playHundle = () => {
     AudioPlayer.play()
@@ -22,18 +19,20 @@ const Player = observer((props: Props) => {
   }
 
   return (
-    <>
+    <div className="Player">
       <IconButton
         className="Player-icon"
         onClick={AudioPlayer.isPlay ? pauseHundle : playHundle}
       >
         {AudioPlayer.isPlay ? (
-          <PauseIcon sx={styles} />
+          <IoPause color="#e6e6e6" />
         ) : (
-          <PlayArrowIcon sx={styles} />
+          <IoPlay color="#e6e6e6" />
         )}
       </IconButton>
-    </>
+      <PlaybackSlider audio={audio} audioContext={AudioPlayer.context} />
+      
+    </div>
   )
 })
 

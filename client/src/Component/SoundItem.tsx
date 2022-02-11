@@ -24,18 +24,14 @@ type Props = {
 const SoundItem = observer((props: Props) => {
   const { _id, name, path, description, size, icon } = props.item
 
-  const isThis = AudioPlayer.audio.src.split('=').pop() === _id
-  const [isPlaying, setIsPlaying] = useState(false)
-
+  const isPlaying = AudioPlayer.audioId === _id && AudioPlayer.isPlay
 
   const handlePlay = (e: any) => {
-    if (!isThis) AudioPlayer.setAudio(_id)
-    else AudioPlayer.play()
-    setIsPlaying(true)
+    AudioPlayer.setAudio(_id)
   }
+
   const handlePause = (e?: any) => {
     AudioPlayer.pause()
-    setIsPlaying(false)
   }
 
   const handleDelete = (e: any) => {

@@ -1,13 +1,17 @@
 import apiClient from "../services/apiClient"
 import { autorun, makeAutoObservable } from "mobx"
 
+//@ts-ignore
+import WaveSurfer from "wavesurfer.js"
+
 const defaultURL = `/api/play/`
 // const defaultURL = `/api/play/`
 
 class AudioPlayer {
   audio = new Audio()
+  audioId = ""
   isPlay = false
-  volume = 0.5
+  volume = 0.3
 
   context = new AudioContext()
   analyser = this.context.createAnalyser()
@@ -16,6 +20,8 @@ class AudioPlayer {
     makeAutoObservable(this)
 
     this.audio.crossOrigin = "anonymous"
+    this.audio.volume = this.volume
+    this.audio.preload = "auto"
     this.analyser.fftSize = 512
     const src = this.context.createMediaElementSource(this.audio)
     src.connect(this.analyser)
@@ -23,9 +29,14 @@ class AudioPlayer {
   }
 
   setAudio(id: string) {
+    if (this.audioId === id) return this.play()
+    this.pause()
+    this.audioId = id
     this.audio.src = `${defaultURL}?id=${id}`
     this.audio.crossOrigin = "anonymous"
     this.audio.volume = this.volume
+
+    this.audio.load()
     this.play()
   }
 

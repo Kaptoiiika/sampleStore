@@ -1,7 +1,6 @@
 import apiClient from "../services/apiClient"
 import { makeAutoObservable } from "mobx"
 
-const defaultURL = `http://${window.location.hostname}:3030/api/play/`
 class ItemsData {
   items = [
     {
