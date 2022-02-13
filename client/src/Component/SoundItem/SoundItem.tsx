@@ -7,15 +7,15 @@ import {
   Typography,
 } from "@mui/material"
 
+import "./SoundItem.scss"
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
 import { Delete, FileDownload } from "@mui/icons-material/"
-import { item } from "../Types/item"
-import { useState } from "react"
-import axios from "axios"
-import AudioPlayer from "../state/AudioPlayer"
+import { item } from "../../Types/item"
+import AudioPlayer from "../../state/AudioPlayer"
 import { observer } from "mobx-react-lite"
-import ItemsData from "../state/ItemsData"
+import ItemsData from "../../state/ItemsData"
+import AuthData from "../../state/AuthData"
 
 type Props = {
   item: item
@@ -40,43 +40,16 @@ const SoundItem = observer((props: Props) => {
 
   return (
     <Card style={{ zIndex: "1", margin: "10px" }}>
-      <Box
-        style={{
-          display: "flex",
-          flexDirection: "row",
-        }}
-      >
-        <Box
-          sx={{
-            width: "250px",
-            height: "150px",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h6">
-              {name}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
+      <div className="SoundItem-wrapper">
+        <div className="SoundItem-content">
+          <div className="SoundItem-content-info">
+            <div className="SoundItem-content-info-name">{name}</div>
+            <div className="SoundItem-content-info-description">
               {description}
-            </Typography>
-          </CardContent>
+            </div>
+          </div>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              pl: 1,
-              pb: 1,
-              position: "sticky",
-              bottom: 0,
-            }}
-          >
+          <div className="SoundItem-content-buttons">
             {["mp3", "wav", "mp4a"].includes(
               path.split(".").pop() as string
             ) ? (
@@ -91,7 +64,7 @@ const SoundItem = observer((props: Props) => {
                 )}
               </IconButton>
             ) : (
-              <div>  &nbsp;</div>
+              <div style={{ margin: 8 }}></div>
             )}
 
             <Typography
@@ -111,23 +84,24 @@ const SoundItem = observer((props: Props) => {
               <FileDownload />
             </IconButton>
 
-            <IconButton onClick={handleDelete} size="large">
-              <Delete />
-            </IconButton>
-          </Box>
-        </Box>
+            {AuthData.user._id === "6206d6a5b50b8627bd4b15c5" ? (
+              <IconButton onClick={handleDelete} size="large">
+                <Delete />
+              </IconButton>
+            ) : null}
+          </div>
+        </div>
 
-        <CardMedia
-          component="img"
-          sx={{ width: 150 }}
-          image={
+        <img
+          className="SoundItem-content-image"
+          src={
             icon
               ? icon
               : `http://${window.location.hostname}:3030/api/item/icon/${_id}`
           }
           alt="someAvatar"
         />
-      </Box>
+      </div>
     </Card>
   )
 })

@@ -1,0 +1,119 @@
+.Menu {
+  display: grid;
+
+  .NavBar {
+    display: flex;
+  }
+}
+.AccountProfile {
+  width: 100%;
+}
+
+.AccountCard {
+  margin: auto;
+  max-width: 660px;
+  height: 100%;
+  border-radius: 10px;
+  background-color: rgb(24, 25, 28);
+  padding: 0 0 16px 0;
+  .banner {
+    height: 100px;
+    border-radius: 10px 10px 0 0;
+    background-color: rgb(203, 186, 180);
+  }
+  .userInfo {
+    margin: -10px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    .name {
+      margin: 0 1em;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .avatar {
+      margin: 0 0 0 16px;
+      border: 7px solid rgb(24, 25, 28);
+      border-radius: 50%;
+      background-color: rgb(24, 25, 28);
+    }
+    .update {
+      margin: 0 16px 0 0;
+    }
+  }
+  .usermoreinfo {
+    margin: 16px 16px 0 16px;
+    padding: 8px 16px 16px;
+    border-radius: 8px;
+    background-color: rgb(47, 49, 54);
+    .textfield {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1em 0;
+      .textfield-info {
+        width: 100%;
+        margin: 0 1em 0 0;
+        display: flex;
+        align-items: flex-start;
+        align-content: flex-start;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+.btn {
+  border: 0;
+  border-radius: 3px;
+  outline: none;
+  padding: 0.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.17s ease, color 0.17s ease;
+  font-family: inherit;
+
+  &-primary {
+    background-color: rgb(88, 101, 242);
+    &:hover {
+      background-color: rgb(71, 82, 196);
+    }
+    &:active {
+      background-color: rgb(60, 69, 165);
+    }
+  }
+  &-secondary {
+    background-color: #4f545c;
+    &:hover {
+      background-color: red;
+    }
+  }
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.avatar-24 {
+  width: 24px;
+  height: 24px;
+}
+.avatar-32 {
+  width: 32px;
+  height: 32px;
+}
+.avatar-40 {
+  width: 40px;
+  height: 40px;
+}
+.avatar-80 {
+  width: 80px;
+  height: 80px;
+}

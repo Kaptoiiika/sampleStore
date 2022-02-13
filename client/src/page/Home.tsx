@@ -1,7 +1,8 @@
-import axios from "axios"
 import { observer } from "mobx-react-lite"
+import "./styles/Home.scss"
 import React from "react"
-import SoundItem from "../Component/SoundItem"
+import SoundItem from "../Component/SoundItem/SoundItem"
+
 import ItemsData from "../state/ItemsData"
 import { item } from "../Types/item"
 
@@ -52,7 +53,6 @@ const Home = observer((props: Props) => {
           })}
         </div>
       </div>
-
     </div>
   )
 })

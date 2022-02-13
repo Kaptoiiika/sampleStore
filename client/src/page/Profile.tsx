@@ -1,9 +1,12 @@
-import React from 'react';
+import { observer } from "mobx-react-lite"
+import React from "react"
+import AccountProfile from "../Component/ProfileUser/AccountProfile"
+import AuthData from "../state/AuthData"
 
-type Props = {};
+type Props = {}
 
-const Profile = (props: Props) => {
-  return <div>Profile</div>;
-};
+const Profile = observer((props: Props) => {
+  return <AccountProfile />
+})
 
-export default Profile;
+export default Profile

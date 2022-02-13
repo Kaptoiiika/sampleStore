@@ -4,7 +4,8 @@ import { observer } from "mobx-react-lite"
 import AudioPlayer from "../../state/AudioPlayer"
 
 import { IoPlay, IoPause } from "react-icons/io5"
-import PlaybackSlider from "./Player/PlaybackSlider"
+import PlaybackSlider from "./PlaybackSlider"
+import VolumeSlider from "./VolumeSlider"
 
 type Props = {}
 
@@ -31,7 +32,9 @@ const Player = observer((props: Props) => {
         )}
       </IconButton>
       <PlaybackSlider audio={audio} audioContext={AudioPlayer.context} />
-      
+      <VolumeSlider
+        audio={AudioPlayer.audio}
+      />
     </div>
   )
 })

@@ -12,12 +12,8 @@ const AudioVisual = observer((props: Props) => {
   const [ctx, setCtx] = React.useState<any>()
 
   const analyser = AudioPlayer.analyser
-  const [bufferLength] = React.useState(
-    analyser.frequencyBinCount
-  )
-  const [dataArray] = React.useState(
-    new Uint8Array(bufferLength)
-  )
+  const [bufferLength] = React.useState(analyser.frequencyBinCount)
+  const [dataArray] = React.useState(new Uint8Array(bufferLength))
 
   const animate = (time: any) => {
     const WIDTH = canvas.width
@@ -29,7 +25,6 @@ const AudioVisual = observer((props: Props) => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     dataArray.forEach((value: number, index: number) => {
-
       ctx.fillStyle = scaleFn(value)
 
       if (!index) {
@@ -57,19 +52,22 @@ const AudioVisual = observer((props: Props) => {
 
   const handleCanvas = React.useCallback((node) => {
     setCanvas(node)
-    setCtx(node.getContext("2d"))
+    const context = node.getContext("2d")
+    
+    context.globalCompositeOperation = "destination-over"
+
+    setCtx(context)
   }, [])
 
   React.useEffect(() => {
     if (!canvas) return
     requestRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(requestRef.current as number)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvas])
 
   return <canvas className="AudioVisuals" ref={handleCanvas} width="1920" />
 })
-const scaleFn = scaleSequential(interpolateCool)
-  .domain([0, 512])
+const scaleFn = scaleSequential(interpolateCool).domain([0, 512])
 
 export default AudioVisual

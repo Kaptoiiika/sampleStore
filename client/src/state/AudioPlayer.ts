@@ -1,11 +1,7 @@
 import apiClient from "../services/apiClient"
-import { autorun, makeAutoObservable } from "mobx"
-
-//@ts-ignore
-import WaveSurfer from "wavesurfer.js"
+import { makeAutoObservable } from "mobx"
 
 const defaultURL = `/api/play/`
-// const defaultURL = `/api/play/`
 
 class AudioPlayer {
   audio = new Audio()
@@ -41,6 +37,7 @@ class AudioPlayer {
   }
 
   setVolume(pwr: number) {
+    
     this.volume = pwr
     this.audio.volume = pwr
   }

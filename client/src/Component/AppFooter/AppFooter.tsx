@@ -1,8 +1,8 @@
 import "./AppFooter.scss"
 import React from "react"
 import CreateSoundItem from "../CreateSoundItem"
-import Player from "./Player"
-import AudioVisual from "./AudioVisual"
+import Player from "../Player/Player"
+import AudioVisual from "../Player/AudioVisual"
 
 type Props = {}
 
@@ -17,17 +17,11 @@ const AppFooter = (props: Props) => {
       <AudioVisual />
 
       <div className="footer">
-        <div
-          className="footer-button"
-          onClick={() => {
-            alert("boar")
-          }}
-        >
-          someButton
+        <div>
         </div>
         <Player />
 
-        <div className="footer-button" onClick={handleClickOpen}>
+        <div className="footer-button footer-button-addButton" onClick={handleClickOpen}>
           Добавить звук
         </div>
       </div>

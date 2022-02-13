@@ -1,0 +1,11 @@
+.PLayer{
+  &-volume{
+    &-slider{
+      width: 50px;
+      height: 100px;
+    }
+  }
+}
+.PLayer-volume-slider{
+  padding: 15px;
+}

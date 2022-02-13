@@ -21,6 +21,9 @@ const streamQuery = async (req, res) => {
     const item = await Item.findById(req.query.id)
     const path = `${config.get("filePath")}\\${item.path}`
 
+    item.countOfPlays += 1
+    item.save()
+    
     fs.access(path, (e) => {
       if (e) {
         res.status(500).json({ message: "Файл не найден", error: e.message })

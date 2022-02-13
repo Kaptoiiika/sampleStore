@@ -5,12 +5,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Slide,
   TextField,
 } from "@mui/material"
-import { TransitionProps } from "@mui/material/transitions"
-import axios from "axios"
-import SoundItem from "./SoundItem"
+import SoundItem from "./SoundItem/SoundItem"
 import defaulticon from "../static/icons/default.png"
 import { observer } from "mobx-react-lite"
 import ItemsData from "../state/ItemsData"

@@ -1,4 +1,5 @@
 import axios from "axios"
+import apiClient from "../services/apiClient"
 import { makeAutoObservable } from "mobx"
 
 const storageName = "userData"
@@ -9,7 +10,7 @@ class AuthData {
   token = ""
   user = {
     _id: "null",
-    name: "null",
+    username: "null",
     email: "null",
     icon: "null",
     status: "",
@@ -72,16 +73,10 @@ class AuthData {
 
   async updateInfo(status: string, social: string) {
     try {
-      await axios.post(
-        "api/user/updateInfo",
-        {
-          status: status,
-          social: social,
-        },
-        {
-          headers: { Authorization: `Bearer ${this.token}` },
-        }
-      )
+      await apiClient.post("api/user/updateInfo", {
+        status: status,
+        social: social,
+      })
     } catch (error: any) {
       return error.response.data.message
     }
@@ -111,6 +106,7 @@ class AuthData {
         )
       })
       .catch((error) => {
+        this.isAuth = true
         this.token = ""
         localStorage.removeItem(storageName)
       })

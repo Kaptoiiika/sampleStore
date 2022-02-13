@@ -18,7 +18,6 @@ const AppHeader = observer((props: Props) => {
         <div className="NavBar">
           <img className="NavBar-logo"src={Logo} alt="Logo" />
           <NavBarButton title="Home" path="/" currentPath={pathname} />
-          <NavBarButton title="SomeButton" path="/asd" currentPath={pathname} />
         </div>
         <div className="NavBar-profile">
           {isAuth ? (

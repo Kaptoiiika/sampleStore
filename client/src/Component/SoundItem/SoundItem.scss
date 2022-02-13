@@ -1,0 +1,54 @@
+.SoundItem-wrapper {
+  display: grid;
+  height: 150px;
+  width: 400px;
+  grid-template-columns: 250px 150px;
+}
+.SoundItem-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 1em;
+  &-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    &-name {
+      font-size: 1.25em;
+      font-weight: 500;
+      overflow-y: auto;
+      white-space: nowrap;
+      &::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+      }
+    }
+    &-description {
+      font-size: 0.8em;
+      font-weight: 400;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow-x: auto;
+      line-clamp: 3;
+      max-height: 3.5em;
+      &::-webkit-scrollbar {
+        width: 0px;
+        height: 0px;
+      }
+    }
+  }
+  &-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: -0.5em -1em;
+  }
+}

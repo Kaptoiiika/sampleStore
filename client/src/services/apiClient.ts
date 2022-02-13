@@ -4,7 +4,7 @@ import AuthData from "../state/AuthData"
 axios.interceptors.request.use(
   (config) => {
     if (AuthData.isAuth) {
-      config.headers = { Authorization: `Bearer ${AuthData.token}` } //todo: использовать этот токен
+      config.headers = { Authorization: `Bearer ${AuthData.token}` }
     }
     return config
   },

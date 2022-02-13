@@ -3,6 +3,7 @@ const { Router } = require("express")
 const router = Router()
 const Item = require("../models/Item.js")
 const fs = require("fs")
+const { findById } = require("../models/Item.js")
 
 const Create = async (req, res) => {
   try {
@@ -33,6 +34,48 @@ const Create = async (req, res) => {
     await item.save()
 
     res.status(201).json({ _id: item._id })
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).json({ message: "create item error", error: error.message })
+  }
+}
+const Update = async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id)
+    if (!item) return res.status(404)
+    
+    const file = req.files.source
+    const icon = req.files.icon
+
+    const { name, tags, description } = req.body
+
+    const path = `${config.get("filePath")}\\${file.name}`
+    const iconPath = `${config.get("filePath")}\\icons\\${item._id}.png`
+
+    if (file && file.size) {
+      file.mv(path)
+      item.path = `${file.name}`
+    }
+
+    if (icon && icon.size) {
+      icon.mv(iconPath)
+    } else {
+      fs.copyFile(
+        `${config.get("filePath")}\\icons\\default.png`,
+        iconPath,
+        (err) => {
+          console.log(err)
+        }
+      )
+    }
+
+    item.name = name
+    item.tags = tags
+    item.description = description
+
+    await item.save()
+
+    res.status(200)
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: "create item error", error: error.message })
@@ -108,8 +151,10 @@ const Delete = async (req, res) => {
   }
 }
 
-router.post("/create", Create)
+router.post("/", Create)
+router.put("/:id", Update)
 router.delete("/:id", Delete)
+
 router.get("/tags", getByTags)
 router.get("/:id", ItemId)
 router.get("/", All)

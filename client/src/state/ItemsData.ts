@@ -23,6 +23,7 @@ class ItemsData {
       this.items = data
     } catch (error) {}
   }
+
   async handleSend(form: any, file: any, avatar?: any) {
     const formData = new FormData()
     formData.append("name", form.name)
@@ -32,12 +33,13 @@ class ItemsData {
     formData.append("source", file)
     if (avatar) formData.append("icon", avatar)
     try {
-      await apiClient.post("/api/item/create", formData)
+      await apiClient.post("/api/item/", formData)
       this.get()
     } catch (error: any) {
       console.log(error.message)
     }
   }
+  
   async delete(id: string) {
     try {
       apiClient.delete(`/api/item/${id}`)

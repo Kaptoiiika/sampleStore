@@ -7,6 +7,9 @@ const schema = new Schema({
   path: { type: String, default: "" },
   size: { type: Number },
   dataCreate: { type: Date, default: Date.now() },
+
+  countOfPlays: { type: Number, default:0},
+
 })
 
 schema.set("toJSON", {
