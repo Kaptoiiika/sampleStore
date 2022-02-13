@@ -5,6 +5,7 @@ import SoundItem from "../Component/SoundItem/SoundItem"
 
 import ItemsData from "../state/ItemsData"
 import { item } from "../Types/item"
+import AuthData from "../state/AuthData"
 
 type Props = {}
 
@@ -48,7 +49,17 @@ const Home = observer((props: Props) => {
       <div className="content">
         <div className="cards">
           {items.map((item: item) => {
-            if (item.path) return <SoundItem item={item} key={item._id} />
+            if (item.path)
+              return (
+                <SoundItem
+                  item={item}
+                  key={item._id}
+                  admin={
+                    AuthData.user._id === "6206d6a5b50b8627bd4b15c5" ||
+                    AuthData.user._id === item.owner
+                  }
+                />
+              )
             return null
           })}
         </div>

@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 56px 1fr 60px;
+  grid-template-rows: 56px 1fr 60px 87px;
 }
 .dragOver {
   z-index: 1000000000;
@@ -28,4 +28,12 @@
   top: 0;
   width: 100%;
   z-index: 10;
+}
+
+.popper-text {
+  background-color: white;
+  padding: 3px;
+  border-radius: 100px;
+  color: black;
+  font-weight: 300;
 }

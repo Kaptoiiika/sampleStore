@@ -5,6 +5,7 @@
   grid-template-columns: 250px 150px;
 }
 .SoundItem-content {
+  font-family: 'Roboto Slab', serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -21,7 +22,7 @@
     gap: 5px;
     &-name {
       font-size: 1.25em;
-      font-weight: 500;
+      font-weight: 400;
       overflow-y: auto;
       white-space: nowrap;
       &::-webkit-scrollbar {
@@ -31,7 +32,7 @@
     }
     &-description {
       font-size: 0.8em;
-      font-weight: 400;
+      font-weight: 300;
       text-overflow: ellipsis;
       word-wrap: break-word;
       -webkit-line-clamp: 3;

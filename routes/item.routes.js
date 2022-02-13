@@ -4,15 +4,25 @@ const router = Router()
 const Item = require("../models/Item.js")
 const fs = require("fs")
 const { findById } = require("../models/Item.js")
+const authMiddleware = require("../middleware/auth.middleware.js")
+const User = require("../models/User.js")
 
 const Create = async (req, res) => {
   try {
+    const user = await User.findById(req.user.id)
+
     const file = req.files.source
     const icon = req.files.icon
 
     const { name, tags, description } = req.body
 
-    const item = new Item({ name, tags, description, size: file.size })
+    const item = new Item({
+      name,
+      tags,
+      description,
+      size: file.size,
+      owner: user._id,
+    })
 
     const path = `${config.get("filePath")}\\${file.name}`
     item.path = `${file.name}`
@@ -33,7 +43,10 @@ const Create = async (req, res) => {
 
     await item.save()
 
-    res.status(201).json({ _id: item._id })
+    user.uploads.push(item._id)
+    await user.save()
+
+    res.status(200).json({})
   } catch (error) {
     console.log(error.message)
     res.status(500).json({ message: "create item error", error: error.message })
@@ -41,9 +54,11 @@ const Create = async (req, res) => {
 }
 const Update = async (req, res) => {
   try {
+    const user = await User.findById(req.user.id)
+
     const item = await Item.findById(req.params.id)
     if (!item) return res.status(404)
-    
+
     const file = req.files.source
     const icon = req.files.icon
 
@@ -133,6 +148,8 @@ const All = async (req, res) => {
 
 const Delete = async (req, res) => {
   try {
+    const user = await User.findById(req.user.id)
+
     const item = await Item.findById(req.params.id)
 
     const path = `${config.get("filePath")}\\${item.path}`
@@ -151,9 +168,9 @@ const Delete = async (req, res) => {
   }
 }
 
-router.post("/", Create)
-router.put("/:id", Update)
-router.delete("/:id", Delete)
+router.post("/", authMiddleware, Create)
+router.put("/:id", authMiddleware, Update)
+router.delete("/:id", authMiddleware, Delete)
 
 router.get("/tags", getByTags)
 router.get("/:id", ItemId)

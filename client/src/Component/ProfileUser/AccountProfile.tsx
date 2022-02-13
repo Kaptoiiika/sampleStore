@@ -2,12 +2,15 @@ import React, { useState } from "react"
 import "./AccountProfile.scss"
 import { observer } from "mobx-react-lite"
 import AuthData from "../../state/AuthData"
+import UserData from "../../state/UserData"
+import SoundItem from "../SoundItem/SoundItem"
+import { item } from "../../Types/item"
 
 type Props = {}
 
 const AccountProfile = observer((props: Props) => {
-  console.log(AuthData.user)
   const { username: name, status, _id } = AuthData.user
+  const [userInfo, setUserInfo] = useState<any>(null)
   const [open, setopen] = useState(false)
   const [isChange, setIsChange] = useState(false)
   const [form, setForm] = useState(status)
@@ -16,6 +19,12 @@ const AccountProfile = observer((props: Props) => {
     setopen(true)
   }
 
+  React.useEffect(() => {
+    UserData.getUserInfo(_id).then((data) => {
+      setUserInfo(data)
+      console.log(data)
+    })
+  }, [_id])
   const handleClose = () => {
     setopen(false)
   }
@@ -47,6 +56,14 @@ const AccountProfile = observer((props: Props) => {
             Сменить аватар
           </button>
         </div>
+        <div>
+          Количесвто прослушиваний{" "}
+          {userInfo?.uploads?.reduce(
+            (previousValue: number, obj: item) =>
+              previousValue + (obj.countOfPlays as number),
+            0
+          )}
+        </div>
         <div className="usermoreinfo">
           {isChange ? (
             <div className="textfield">
@@ -74,14 +91,6 @@ const AccountProfile = observer((props: Props) => {
                 <label className="title">Статус</label>
                 <label className="text">{status || "жизнь за пиво"}</label>
               </div>
-              <div className="textfield-button">
-                <button
-                  onClick={() => setIsChange(true)}
-                  className="btn btn-secondary"
-                >
-                  изменить
-                </button>
-              </div>
             </div>
           )}
 
@@ -90,13 +99,28 @@ const AccountProfile = observer((props: Props) => {
               <label className="title">Социальные сети</label>
               <label className="text">{"#notPivo"}</label>
             </div>
-            <div className="textfield-button">
-              <button className="btn btn-secondary">изменить</button>
-            </div>
           </div>
         </div>
+        <div className="AccountCard-uploads">
+          <div>Загрузки: {userInfo?.uploads?.length || 0}</div>
+          {userInfo ? (
+            userInfo.uploads.map((item: any) => {
+              if (!item) return null
+              return (
+                <SoundItem
+                  item={item}
+                  admin={
+                    AuthData.user._id === "6206d6a5b50b8627bd4b15c5" ||
+                    AuthData.user._id === item.owner
+                  }
+                />
+              )
+            })
+          ) : (
+            <h5>Тут ничего нет</h5>
+          )}
+        </div>
       </div>
-
       {/* <ChangeAvatar open={open} onClose={handleClose} /> */}
     </div>
   )

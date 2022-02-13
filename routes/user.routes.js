@@ -132,7 +132,7 @@ const getAvatar = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const data = await User.findById(req.params.id)
-
+    await data.populate({ path: "uploads" })
     res.json(data)
   } catch (error) {
     console.log(error.message)

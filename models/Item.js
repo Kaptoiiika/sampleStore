@@ -9,6 +9,7 @@ const schema = new Schema({
   dataCreate: { type: Date, default: Date.now() },
 
   countOfPlays: { type: Number, default:0},
+  owner:{type: Types.ObjectId , ref: "User"}
 
 })
 

@@ -9,7 +9,7 @@ class AuthData {
   isAuth = false
   token = ""
   user = {
-    _id: "null",
+    _id: "",
     username: "null",
     email: "null",
     icon: "null",

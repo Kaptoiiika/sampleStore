@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Licorice&family=Roboto+Slab:wght@400;500;600&display=swap");
 
 body {
   margin: 0;
@@ -14,7 +15,7 @@ body {
     rgba(21, 15, 62, 1) 0%,
     rgba(38, 16, 35, 1) 49%,
     rgba(6, 27, 55, 1) 100%
-  );  
+  );
 }
 
 code {

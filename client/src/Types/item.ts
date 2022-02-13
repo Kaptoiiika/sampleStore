@@ -1,5 +1,6 @@
 export type item = {
   _id: string
+  owner?: string
   name: string
   path: string
   dataCreate: Date
@@ -7,4 +8,5 @@ export type item = {
   tags?: string[]
   size?: number
   icon?: string
+  countOfPlays?: number
 }

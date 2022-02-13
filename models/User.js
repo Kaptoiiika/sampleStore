@@ -8,7 +8,7 @@ const schema = new Schema({
   icon: { type: String, default: "" },
   status: { type: String },
   subscription: { type: String, default: "standard" },
-  uploads: [{ type: Types.ObjectId }],
+  uploads: [{ type: Types.ObjectId, ref: "Item" }],
 })
 
 schema.set("toJSON", {

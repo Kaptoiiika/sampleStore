@@ -1,4 +1,5 @@
 import React from "react"
+import "./Player.scss"
 import { IconButton } from "@mui/material"
 import { observer } from "mobx-react-lite"
 import AudioPlayer from "../../state/AudioPlayer"
@@ -32,9 +33,9 @@ const Player = observer((props: Props) => {
         )}
       </IconButton>
       <PlaybackSlider audio={audio} audioContext={AudioPlayer.context} />
-      <VolumeSlider
-        audio={AudioPlayer.audio}
-      />
+      <div className="Player-volume">
+        <VolumeSlider audio={AudioPlayer.audio} />
+      </div>
     </div>
   )
 })
