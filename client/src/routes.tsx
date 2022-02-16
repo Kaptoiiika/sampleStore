@@ -1,5 +1,6 @@
 import React from "react"
 import { Route, Routes } from "react-router-dom"
+import Charts from "./Component/Charts"
 import Home from "./page/Home"
 import Login from "./page/Login"
 import Profile from "./page/Profile"
@@ -19,6 +20,7 @@ const router = () => {
       <Route path="/upgrade" element={<Upgrade />} />
       <Route path="/profile/:id" element={<Profile />} />
       <Route path="/profile/me" element={<Profile />} />
+      <Route path="/Charts" element={<Charts/>} />
     </Routes>
   )
 }
