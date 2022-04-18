@@ -1,10 +1,10 @@
-import { observer } from "mobx-react-lite"
-import React from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import AuthData from "../../state/AuthData"
-import "./AppHeader.scss"
-import NavBarButton from "./NavBarButton"
-import Logo from "../../static/icons/Logo.png"
+import { observer } from 'mobx-react-lite'
+import React from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import AuthData from '../../state/AuthData'
+import './AppHeader.scss'
+import NavBarButton from './NavBarButton'
+import Logo from '../../static/icons/Logo.png'
 
 type Props = {}
 
@@ -16,7 +16,12 @@ const AppHeader = observer((props: Props) => {
     <div className="header-wrapper">
       <div className="header">
         <div className="NavBar">
-          <img className="NavBar-logo"src={Logo} alt="Logo" />
+          <img
+            onClick={() => navigate('/')}
+            className="NavBar-logo"
+            src={Logo}
+            alt="Logo"
+          />
           <NavBarButton title="Home" path="/" currentPath={pathname} />
         </div>
         <div className="NavBar-profile">
@@ -26,7 +31,7 @@ const AppHeader = observer((props: Props) => {
                 <p
                   className="NavBar-button NavBar-button-Upgrade"
                   onClick={() => {
-                    navigate("/upgrade")
+                    navigate('/upgrade')
                   }}
                 >
                   Upgrade
@@ -48,10 +53,10 @@ const AppHeader = observer((props: Props) => {
               <div className="alignCenter">
                 <div
                   className={`NavBar-button NavBar-button-SignUp ${
-                    pathname === "/registration" ? "NavBar-button-active" : ""
+                    pathname === '/registration' ? 'NavBar-button-active' : ''
                   }`}
                   onClick={() => {
-                    navigate("/registration")
+                    navigate('/registration')
                   }}
                 >
                   Sign up

@@ -40,7 +40,7 @@ class AuthData {
       this.isAuth = true
       return ""
     } catch (error: any) {
-      return error.response.data.message
+      throw new Error(error)
     } finally {
       this.loading = false
     }
@@ -65,7 +65,7 @@ class AuthData {
       this.isAuth = true
       return ""
     } catch (error: any) {
-      return error.response.data.message
+      throw new Error(error)
     } finally {
       this.loading = false
     }

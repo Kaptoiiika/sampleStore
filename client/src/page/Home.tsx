@@ -1,11 +1,11 @@
-import { observer } from "mobx-react-lite"
-import "./styles/Home.scss"
-import React from "react"
-import SoundItem from "../Component/SoundItem/SoundItem"
+import { observer } from 'mobx-react-lite'
+import './styles/Home.scss'
+import React from 'react'
+import SoundItem from '../Component/SoundItem/SoundItem'
 
-import ItemsData from "../state/ItemsData"
-import { item } from "../Types/item"
-import AuthData from "../state/AuthData"
+import ItemsData from '../state/ItemsData'
+import { item } from '../Types/item'
+import AuthData from '../state/AuthData'
 
 type Props = {}
 
@@ -24,47 +24,43 @@ const Home = observer((props: Props) => {
     console.log(file)
     setisOver(false)
   }
+  
   const dragOver = (e: any) => {
     setisOver(true)
-    e.preventDefault()
   }
-
-  const dragEnter = (e: any) => {
-    e.preventDefault()
-  }
-
   const dragLeave = (e: any) => {
     setisOver(false)
-    e.preventDefault()
   }
 
   return (
-    <div
-      onDragOver={dragOver}
-      onDragEnter={dragEnter}
-      onDragLeave={dragLeave}
-      onDrop={fileDrop}
-      className={isOver ? "dragOver" : ""}
-    >
-      <div className="content">
-        <div className="cards">
-          {items.map((item: item) => {
-            if (item.path)
-              return (
-                <SoundItem
-                  item={item}
-                  key={item._id}
-                  admin={
-                    AuthData.user._id === "6206d6a5b50b8627bd4b15c5" ||
-                    AuthData.user._id === item.owner
-                  }
-                />
-              )
-            return null
-          })}
+    <>
+      {isOver ? <div className='DND-place'></div> : null}
+      <div
+        onDragOver={dragOver}
+        onDragLeave={dragLeave}
+        onDrop={fileDrop}
+        className={isOver ? 'dragOver' : ''}
+      >
+        <div className="content">
+          <div className="cards">
+            {items.map((item: item) => {
+              if (item.path)
+                return (
+                  <SoundItem
+                    item={item}
+                    key={item._id}
+                    admin={
+                      AuthData.user._id === '6206d6a5b50b8627bd4b15c5' ||
+                      AuthData.user._id === item.owner
+                    }
+                  />
+                )
+              return null
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 })
 

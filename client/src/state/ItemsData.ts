@@ -42,7 +42,7 @@ class ItemsData {
   
   async delete(id: string) {
     try {
-      apiClient.delete(`/api/item/${id}`)
+      await apiClient.delete(`/api/item/${id}`)
       this.get()
     } catch (error: any) {
       console.log(error.message)

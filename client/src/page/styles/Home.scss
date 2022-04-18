@@ -4,3 +4,33 @@
   flex-direction: row;
   justify-content: center;
 }
+.DND-place {
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.input-file {
+  margin: 1em auto 0 auto;
+  width: 100%;
+  max-width: 290px;
+  height: 60px;
+  background: #1bbc9c00;
+  color: rgb(0, 0, 0);
+  font-weight: 700;
+
+  display: flex;
+  cursor: pointer;
+
+  &.file {
+    &::after {
+      content: 'Выберите звуковой файл';
+    }
+  }
+  &.photo {
+    &::after {
+      content: 'Выберите логотип';
+    }
+  }
+}

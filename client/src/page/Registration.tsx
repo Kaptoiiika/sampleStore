@@ -1,23 +1,32 @@
-import { observer } from "mobx-react-lite"
-import React from "react"
-import AuthData from "../state/AuthData"
+import { observer } from 'mobx-react-lite'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import AuthData from '../state/AuthData'
 
 type Props = {}
 
 const Registration = observer((props: Props) => {
+  const navigate = useNavigate()
+
   const [form, setForm] = React.useState({
-    email: "",
-    password: "",
-    username: "",
+    email: '',
+    password: '',
+    username: '',
   })
-  const [error, setError] = React.useState("")
+
+  const [error, setError] = React.useState<any>('')
 
   function changeHandler(e: any) {
     setForm({ ...form, [e.target.id]: e.target.value })
   }
 
   async function RegistrationHandler() {
-    AuthData.registertration(form.email, form.username, form.password)
+    try {
+      await AuthData.registertration(form.email, form.username, form.password)
+      navigate('/profile/me')
+    } catch (error) {
+      setError(error)
+    }
   }
 
   return (
@@ -50,6 +59,9 @@ const Registration = observer((props: Props) => {
               type="password"
               onChange={changeHandler}
             />
+            {error ? (
+              <p>{error?.response?.data?.message ?? 'Произошла ошибка'}</p>
+            ) : null}
             <button
               className="button card-inputs-button"
               onClick={RegistrationHandler}
