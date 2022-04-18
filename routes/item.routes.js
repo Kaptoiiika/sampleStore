@@ -5,11 +5,12 @@ const Item = require("../models/Item.js")
 const fs = require("fs")
 const { findById } = require("../models/Item.js")
 const authMiddleware = require("../middleware/auth.middleware.js")
+const noauthmiddleware = require("../middleware/noauth.middleware.js")
 const User = require("../models/User.js")
 
 const Create = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
+    const user = req.user ? await User.findById(req.user.id) : null
 
     const file = req.files.source
     const icon = req.files.icon
@@ -21,7 +22,7 @@ const Create = async (req, res) => {
       tags,
       description,
       size: file.size,
-      owner: user._id,
+      owner: user ? user._id : null,
     })
 
     const path = `${config.get("filePath")}\\${file.name}`
@@ -159,7 +160,7 @@ const Delete = async (req, res) => {
 
     await Item.findByIdAndDelete(req.params.id)
 
-    res.status(200)
+    res.status(204).json({ message: "Nocontent", error: error.message })
   } catch (error) {
     console.log(error.message)
     res
@@ -168,7 +169,7 @@ const Delete = async (req, res) => {
   }
 }
 
-router.post("/", authMiddleware, Create)
+router.post("/", noauthmiddleware, Create)
 router.put("/:id", authMiddleware, Update)
 router.delete("/:id", authMiddleware, Delete)
 

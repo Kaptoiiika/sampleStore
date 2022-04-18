@@ -111,6 +111,7 @@ const Charts = (props: Props) => {
     const min = Math.min(...arr)
 
     const filtredArray = arr.map((value: number) => {
+      if (max < 1) return value
       return value / max
       // return (value - min) / (max - min)
     })

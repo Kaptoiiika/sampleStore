@@ -93,7 +93,7 @@ const SoundItem = observer((props: Props) => {
             </Typography>
 
             <IconButton
-              href={`http://${window.location.hostname}:3030/api/play/download/${path}`}
+              href={`/api/play/download/${path}`}
               download
               no-referrer
               size="large"
@@ -114,7 +114,7 @@ const SoundItem = observer((props: Props) => {
           src={
             icon
               ? icon
-              : `http://${window.location.hostname}:3030/api/item/icon/${_id}`
+              : `/api/item/icon/${_id}`
           }
           alt="someAvatar"
         />
