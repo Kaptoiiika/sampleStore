@@ -1,16 +1,16 @@
-import { observer } from 'mobx-react-lite'
-import './styles/Home.scss'
-import React from 'react'
-import SoundItem from '../Component/SoundItem/SoundItem'
+import { observer } from "mobx-react-lite"
+import "./styles/Home.scss"
+import React from "react"
+import SoundItem from "../Component/SoundItem/SoundItem"
 
-import ItemsData from '../state/ItemsData'
-import { item } from '../Types/item'
-import AuthData from '../state/AuthData'
+import ItemsData from "../state/ItemsData"
+import { item } from "../Types/item"
+import AuthData from "../state/AuthData"
 
 type Props = {}
 
 const Home = observer((props: Props) => {
-  const [isOver, setisOver] = React.useState(false)
+  const [dragOver, setDragOver] = React.useState(false)
   const items = ItemsData.items
 
   React.useEffect(() => {
@@ -18,49 +18,41 @@ const Home = observer((props: Props) => {
   }, [])
 
   const fileDrop = (e: any) => {
-    e.preventDefault()
+    console.log(e)
     const file = e.dataTransfer.files[0]
     ItemsData.handleSend({ name: file.name, description: file.type }, file)
     console.log(file)
-    setisOver(false)
-  }
-  
-  const dragOver = (e: any) => {
-    setisOver(true)
-  }
-  const dragLeave = (e: any) => {
-    setisOver(false)
+    setDragOver(false)
   }
 
   return (
-    <>
-      {isOver ? <div className='DND-place'></div> : null}
-      <div
-        onDragOver={dragOver}
-        onDragLeave={dragLeave}
-        onDrop={fileDrop}
-        className={isOver ? 'dragOver' : ''}
-      >
-        <div className="content">
-          <div className="cards">
-            {items.map((item: item) => {
-              if (item.path)
-                return (
-                  <SoundItem
-                    item={item}
-                    key={item._id}
-                    admin={
-                      AuthData.user._id === '6206d6a5b50b8627bd4b15c5' ||
-                      AuthData.user._id === item.owner
-                    }
-                  />
-                )
-              return null
-            })}
-          </div>
-        </div>
-      </div>
-    </>
+    <div
+      className={`cards ${dragOver ? "dragOver" : ""}`}
+      onDragEnd={(e) => {
+        setDragOver(false)
+      }}
+      onDragOver={(e) => {
+        setDragOver(true)
+        e.stopPropagation()
+        e.preventDefault()
+      }}
+      onDragLeave={(e) => {
+        setDragOver(false)
+      }}
+      onDrop={fileDrop}
+    >
+      {items.map((item: item) => {
+        if (item.path)
+          return (
+            <SoundItem
+              item={item}
+              key={item._id}
+              admin={AuthData.user._id === "6206d6a5b50b8627bd4b15c5" || AuthData.user._id === item.owner}
+            />
+          )
+        return null
+      })}
+    </div>
   )
 })
 

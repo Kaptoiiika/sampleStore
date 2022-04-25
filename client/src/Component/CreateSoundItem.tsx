@@ -1,12 +1,5 @@
 import * as React from "react"
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import SoundItem from "./SoundItem/SoundItem"
 import defaulticon from "../static/icons/default.png"
 import { observer } from "mobx-react-lite"
@@ -95,12 +88,14 @@ const CreateSoundItem = observer((props: Props) => {
               value={form.description}
             />
             <input
+              className="input-file file"
               id="source"
               onChange={handleFileUpload}
               style={{ margin: "10px 0 0 0" }}
               type="file"
             />
             <input
+              className="input-file photo"
               id="Photo"
               onChange={handlePhotoUpload}
               style={{ margin: "10px 0 0 0" }}
@@ -120,6 +115,15 @@ const CreateSoundItem = observer((props: Props) => {
                 icon: !!avatar.size ? avatarUrl : defaulticon,
               }}
             />
+            Загружая файл, вы соглашаетесь с 
+            <br />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://sun9-75.userapi.com/s/v1/if1/3iCa13OHoGXXZ-fU4wH_pXuz7Zlscvypxc2rkWrX7Gjs3HMT_IU50FHeRO8erQnDLWVp4Q.jpg?size=2560x1920&quality=96&type=album"
+            >
+              лицензионным соглашением
+            </a>
           </div>
         </DialogContent>
         <DialogActions>

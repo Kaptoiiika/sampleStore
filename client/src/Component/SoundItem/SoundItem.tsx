@@ -33,9 +33,15 @@ const SoundItem = observer((props: Props) => {
     AudioPlayer.pause()
   }
 
-  const handleDelete = (e: any) => {
-    ItemsData.delete(_id)
+  const handleDelete = async (e: any) => {
+    try {
+      await ItemsData.delete(_id)
+    } catch (error) {
+    } finally {
+      await ItemsData.get()
+    }
   }
+  
   const hundleOpen = () => {
     setOpen(true)
   }
@@ -55,14 +61,10 @@ const SoundItem = observer((props: Props) => {
         <div className="SoundItem-content">
           <div className="SoundItem-content-info">
             <div className="SoundItem-content-info-name">{name}</div>
-            <div className="SoundItem-content-info-description">
-              {description}
-            </div>
+            <div className="SoundItem-content-info-description">{description}</div>
           </div>
           <div className="SoundItem-content-buttons">
-            {["mp3", "wav", "mp4a"].includes(
-              path.split(".").pop() as string
-            ) ? (
+            {["mp3", "wav", "mp4a"].includes(path.split(".").pop() as string) ? (
               <IconButton
                 ref={PlayPause}
                 onMouseEnter={hundleOpen}
@@ -79,25 +81,14 @@ const SoundItem = observer((props: Props) => {
               <div style={{ margin: 8 }}></div>
             )}
             <Popper open={open} anchorEl={playPauseEl} placement={"top"}>
-              <div className="popper popper-text">
-                {countOfPlays as number}
-              </div>
+              <div className="popper popper-text">{countOfPlays as number}</div>
             </Popper>
 
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="div"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="div">
               {`${((size || 0) / 1024 / 1024).toFixed(2)} mb`}
             </Typography>
 
-            <IconButton
-              href={`/api/play/download/${path}`}
-              download
-              no-referrer
-              size="large"
-            >
+            <IconButton href={`/api/play/download/${path}`} download no-referrer size="large">
               <FileDownload />
             </IconButton>
 
@@ -109,15 +100,7 @@ const SoundItem = observer((props: Props) => {
           </div>
         </div>
 
-        <img
-          className="SoundItem-content-image"
-          src={
-            icon
-              ? icon
-              : `/api/item/icon/${_id}`
-          }
-          alt="someAvatar"
-        />
+        <img className="SoundItem-content-image" src={icon ? icon : `/api/item/icon/${_id}`} alt="someAvatar" />
       </div>
     </Card>
   )

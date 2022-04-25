@@ -26,6 +26,9 @@
     align-items: center;
     justify-content: space-between;
     align-content: center;
+    .buttons{
+      display: flex;
+    }
     .name {
       margin: 0 1em;
       font-size: 20px;

@@ -4,10 +4,7 @@
   display: grid;
   grid-template-rows: 56px 1fr 60px 87px;
 }
-.dragOver {
-  z-index: 1000000000;
-  background-color: rgba(255, 255, 255, 0.226);
-}
+
 .App-Container {
   margin: 56px 0 0 0;
 }
